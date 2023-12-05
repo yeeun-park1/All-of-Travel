@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aidata.aot.dao.ReservationDao">
+
+    <select id="selectHotel" resultType="com.aidata.aot.dto.HotelDto" parameterType="com.aidata.aot.dto.PageDto">
+        SELECT * FROM hotel
+        <if test="colname != null and colname != ''">
+            WHERE ${colname} LIKE CONCAT ('%', #{keyword}, "%")
+        </if>
+    </select>
+</mapper>
