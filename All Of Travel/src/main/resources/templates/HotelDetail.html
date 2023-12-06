@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>All Of Travel</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Start Bootstrap</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="@{index}">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <h3 class="my-4" th:text="${hname} + ' 호텔'"></h3>
+            <input type="hidden" name= "category" value="hotel">
+            <img src="images/sad.jpg" onclick="smile()">
+        </div>
+        <!-- /.col-lg-3 -->
+        <div class="col-lg-9">
+                <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+
+                    <div class="carousel-inner" role="listbox">
+                        <th:block th:each="fitem:${hfList}">
+                        <div class="carousel-item active">
+                            <img class="d-block img-fluid" th:src="${'upload/'+ fitem.horiname}" alt="First slide">
+                        </div>
+                            <div>aaa</div>
+                        </th:block>
+                    </div>
+
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+
+                <div class="row">
+                    <th:block th:if="${#lists.isEmpty(rlist)}">
+                        <div class="col-lg-4 col-md-6 mb-4" style="width: 100%">
+                            등록된 객실이 없습니다.
+                        </div>
+                    </th:block>
+                    <th:block th:unless="${#lists.isEmpty(rlist)}">
+                        <th:block th:each="ritem:${rlist}">
+                            <input type="hidden" name="company" th:value="${ritem.hnum}">
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <a th:href="@{RoomDetail(rnum=${ritem.roomnum})}">
+                                    <div class="card h-100">
+                                        <img class="card-img-top" th:src="${'upload/'+ ritem.roriname}">
+                                        <div class="card-body">
+                                            <h4 class="card-title" th:text="${ritem.rname}"></h4>
+                                            <p class="card-text" th:text="${ritem.hprice}+' 원'"></p>
+                                            <p class="card-text" th:text="'최대 인원 :  '+${ritem.hmax}+'명'"></p>
+                                            <p class="card-text" th:text="'입실 시간 :  '+${ritem.hcit}"></p>
+                                            <p class="card-text" th:text="'퇴실 시간 :  '+${ritem.hcot}"></p>
+                                        </div>
+                                    </div>
+                                    </a>
+                                </div>
+                        </th:block>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+</div>
+</body>
+<script src="list/vendor/jquery/jquery.min.js"></script>
+<script src="list/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script>
+
+</script>
+</html>
