@@ -6224,7 +6224,7 @@ a.close.disabled {
 
 .carousel-inner {
   position: relative;
-  width: 100%;
+  width: 800px;
   overflow: hidden;
 }
 
@@ -6735,6 +6735,7 @@ button.bg-dark:focus {
 
 .d-block {
   display: block !important;
+
 }
 
 .d-table {
@@ -8012,6 +8013,8 @@ button.bg-dark:focus {
 
 .m-4 {
   margin: 1.5rem !important;
+  width: 700px;
+  height: 400px;
 }
 
 .mt-4,
