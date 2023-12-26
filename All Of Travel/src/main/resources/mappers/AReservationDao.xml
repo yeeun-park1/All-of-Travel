@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aidata.aot.dao.AReservationDao">
+    <insert id="insertAbook" parameterType="aBookDto" useGeneratedKeys="true" keyProperty="abum">
+        <selectKey keyProperty="abnum" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO abook
+        VALUES (NULL,#{mid}, #{anum}, #{fnum}, #{aname}, #{fname},
+            #{snumber}, #{sgrade}, #{d_airport}, #{a_airport}, #{d_time},
+            #{a_time}, #{d_date}, #{a_date}, #{alogo}, #{abcount}, #{category}, DEFAULT, #{fprice},#{totalprice})
+    </insert>
+    <update id="updateAbook" parameterType="aBookDto">
+        UPDATE abook
+        SET sgrade=#{sgrade}, abcount=#{abcount}, snumber=#{snumber}, totalprice=#{totalprice}
+        WHERE abnum=#{abnum}
+    </update>
+    <delete id="deleteAbook" parameterType="integer">
+        DELETE FROM abook WHERE abnum=#{abnum}
+    </delete>
+    <select id="selectAirLine" resultType="com.aidata.aot.dto.AirLineDto" parameterType="com.aidata.aot.dto.PageDto">
+        SELECT * FROM airline a
+        <if test="colname != null and colname != ''">
+            LEFT JOIN flist f ON a.anum = f.anum
+            WHERE ${colname} LIKE CONCAT('%', #{keyword}, '%')
+    </if>
+    </select>
+    <select id="selectFlightList" resultType="com.aidata.aot.dto.FlightDto" parameterType="integer">
+    SELECT * FROM flist
+    WHERE anum=#{company}
+    </select>
+    <select id="selectFlight" resultType="com.aidata.aot.dto.FlightDto" parameterType="integer">
+    SELECT * FROM flist
+    WHERE fnum=#{fnum}
+
+    </select>
+    <select id="selectTheAirLine" resultType="com.aidata.aot.dto.AirLineDto">
+        SELECT * FROM airline
+        WHERE anum=#{anum}
+    </select>
+    <select id="selectAbook" resultType="com.aidata.aot.dto.aBookDto" parameterType="Integer">
+        SELECT * FROM abook
+        WHERE abnum=#{abnum}
+    </select>
+    <select id="selectFprice" resultType="java.lang.Integer" parameterType="aBookDto">
+    SELECT fprice FROM flist
+    WHERE anum=#{anum} AND fnum=#{fnum}
+    </select>
+    <select id="selectfnum" resultType="java.lang.Integer" >
+        SELECT fnum FROM flist
+        WHERE anum=#{anum}  AND fname=#{fname}
+    </select>
+</mapper>

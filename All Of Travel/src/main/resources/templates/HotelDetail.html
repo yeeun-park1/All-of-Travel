@@ -1,124 +1,272 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <title>All Of Travel</title>
-
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
     <!-- Bootstrap core CSS -->
     <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="list/css/shop-homepage.css" rel="stylesheet">
-
+    <style>
+        .ebtn {
+            background-color: skyblue;
+            box-shadow: black 5px 5px 5px;
+            color: white;
+            font-weight: bolder;
+            width: 300px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        #deslide{
+            width: 480px;
+        }
+        .btn{
+            background-color: darkgray;
+            box-shadow: black 5px 5px 5px;
+            color: white;
+            font-weight: bolder;
+            width: 340px;
+            height: 50px;
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
-
 <body>
-
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="#">Start Bootstrap</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="@{index}">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-            </ul>
+<!-- Responsive navbar-->
+<th:block th:insert="~{fragment::header(${session.member})}"></th:block>
+<!-- Page header with logo and tagline-->
+<header class="bg-light">
+    <div>
+        <div class="text-center">
+            <h1 class="fw-bolder" th:text="${hotel.hname} + ' 호텔'" ></h1>
+            <input type="hidden" id="cname" th:value="${hotel.hname}">
+            <input type="hidden" id="category" value="hotel">
+            <input type="hidden" id="company" th:value="${hotel.hnum}">
+            <p class="lead mb-0"> ◈ Welcome to our Luxury Hotel ◈ </p>
         </div>
     </div>
-</nav>
+</header>
 
-<!-- Page Content -->
+<!-- Page content-->
 <div class="container">
+    <th:block th:insert="~{fragment::menubar(${session.member})}"></th:block>
     <div class="row">
-        <div class="col-lg-3">
-            <h3 class="my-4" th:text="${hname} + ' 호텔'"></h3>
-            <input type="hidden" name= "category" value="hotel">
-            <img src="images/sad.jpg" onclick="smile()">
-        </div>
-        <!-- /.col-lg-3 -->
-        <div class="col-lg-9">
-                <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                    </ol>
+        <!-- Blog entries-->
+        <div class="col-lg-8">
+            <!-- Featured blog post-->
+            <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                </ol>
 
-                    <div class="carousel-inner" role="listbox">
-                        <th:block th:each="fitem:${hfList}">
-                        <div class="carousel-item active">
-                            <img class="d-block img-fluid" th:src="${'upload/'+ fitem.horiname}" alt="First slide">
-                        </div>
-                            <div>aaa</div>
-                            <div>bbb</div>
-                        </th:block>
+                <div id="deslide" class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                        <img class="d-block img-fluid" src="images/public.jpg">
                     </div>
-
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-
-                <div class="row">
-                    <th:block th:if="${#lists.isEmpty(rlist)}">
-                        <div class="col-lg-4 col-md-6 mb-4" style="width: 100%">
-                            등록된 객실이 없습니다.
+                    <th:block th:each="fitem:${hfList}">
+                        <div class="carousel-item">
+                            <img class="d-block img-fluid" th:src="${'upload/' + fitem.horiname}">
                         </div>
                     </th:block>
-                    <th:block th:unless="${#lists.isEmpty(rlist)}">
-                        <th:block th:each="ritem:${rlist}">
-                            <input type="hidden" name="company" th:value="${ritem.hnum}">
-                                <div class="col-lg-4 col-md-6 mb-4">
-                                    <a th:href="@{RoomDetail(rnum=${ritem.roomnum})}">
-                                    <div class="card h-100">
-                                        <img class="card-img-top" th:src="${'upload/'+ ritem.roriname}">
-                                        <div class="card-body">
-                                            <h4 class="card-title" th:text="${ritem.rname}"></h4>
-                                            <p class="card-text" th:text="${ritem.hprice}+' 원'"></p>
-                                            <p class="card-text" th:text="'최대 인원 :  '+${ritem.hmax}+'명'"></p>
-                                            <p class="card-text" th:text="'입실 시간 :  '+${ritem.hcit}"></p>
-                                            <p class="card-text" th:text="'퇴실 시간 :  '+${ritem.hcot}"></p>
-                                        </div>
-                                    </div>
-                                    </a>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+        <!-- Nested row for non-featured blog posts-->
+        <div class="row">
+            <th:block th:if="${#lists.isEmpty(rlist)}">
+                <div class="col-lg-6">
+                    등록된 객실이 없습니다.
+                </div>
+            </th:block>
+            <th:block th:unless="${#lists.isEmpty(rlist)}">
+                <th:block th:each="ritem:${rlist}">
+                    <div class="col-lg-6">
+                        <a th:href="@{RoomDetail(roomnum=${ritem.roomnum})}">
+                            <div class="card mb-4">
+                                <img class="card-img-top" th:src="${'upload/'+ ritem.roriname}">
+                                <div class="card-body">
+                                    <h2 class="card-title h4" th:text="${ritem.rname}"></h2>
+                                    <p class="card-text" th:text="${ritem.hprice}+' 원'"></p>
+                                    <p class="card-text" th:text="'최대 인원 :  '+${ritem.hmax}+'명'"></p>
+                                    <p class="card-text" th:text="'입실 시간 :  '+${ritem.hcit}"></p>
+                                    <p class="card-text" th:text="'퇴실 시간 :  '+${ritem.hcot}"></p>
                                 </div>
-                        </th:block>
-                    </th:block>
+                            </div>
+                        </a>
+                    </div>
+                </th:block>
+            </th:block>
+        </div>
+    </div>
+    <!-- Side widgets-->
+    <div class="col-lg-4">
+        <!-- Search widget-->
+
+        <img id="bookmark" src="images/sad.jpg" onclick="smile()">
+        <!-- Categories widget-->
+        <div class="card mb-4">
+            <div class="card-header">Location</div>
+            <div class="card-body">
+                <div class="row">
+                    <div id="map" style="width:400px;height:500px;"></div>
                 </div>
             </div>
         </div>
+        <!-- Side widget-->
+        <div class="card mb-4">
+            <div class="card-header">Evaluate</div>
+            <div class="card-body">
+                <div class="row">
+                    <h1 class="fw-bolder mb-1" th:text="${hotel.havg} + ' / 10'"></h1>
+                </div>
+                <br>
+                <input type="button" class="ebtn" id="evaluate" value="실제 투숙객들 평가 보기">
+            </div>
+        </div>
+        <input type="button" class="btn" id="backbtn" value="Back">
+    </div>
 </div>
+</div>
+<!-- Footer-->
+<footer>
+    <th:block th:insert="~{fragment::footer}"></th:block>
+</footer>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="list/js/scripts.js"></script>
 <script src="list/vendor/jquery/jquery.min.js"></script>
 <script src="list/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=f8713ba85ecbc2aa1335ea5ffc860fa9"></script>
+<script th:inline="javascript">
 
+    var mapContainer = document.getElementById('map'); // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng([[${hotel.hlati}]],[[${hotel.hlong}]]), // 지도의 초기 중심좌표
+        level: 3 // 지도의 초기 확대 레벨
+    };
+
+    // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    // 마커를 저장할 배열
+    var markers = [];
+
+    // 마커를 생성하는 함수
+    function addMarker(position) {
+        var marker = new kakao.maps.Marker({
+            position: position
+        });
+
+        // 기존 마커들을 모두 제거
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+
+        // 새로운 마커 추가
+        marker.setMap(map);
+
+        // 생성한 마커를 배열에 추가
+        markers.push(marker);
+    }
+
+    // Add a marker at the initial center when the map loads
+    addMarker(mapOption.center);
+
+    // 지도 클릭 이벤트 리스너 추가
+    kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+        // 클릭한 위치의 좌표를 가져옵니다
+        var latlng = mouseEvent.latLng;
+
+        // 새로운 마커 추가 또는 기존 마커 이동
+        addMarker(latlng);
+    });
+
+        $("#bookmark").hide();
+        let mem = [[${session.member}]];
+        if(mem != null){
+            let mid = mem.mid;
+            console.log(mid);
+
+            $("#bookmark").show();
+
+        }
+
+
+    function smile() {
+        console.log("smile()");
+        var imageElement = document.getElementById("bookmark");
+
+        var currentImageSrc = imageElement.src;
+
+        if (currentImageSrc.endsWith("sad.jpg")) {
+            imageElement.src = "images/happy.jpg";
+            //데이터를 전송
+            bookmarkData();
+        } else {
+            imageElement.src = "images/sad.jpg";
+            bookmarkData();
+        }
+    }
+
+    function bookmarkData() {
+        let ctg = $("#category").val();
+        let cpn = $("#company").val();
+        let cname = $("#cname").val();
+
+        let company = {"company": cpn, "category": ctg, "cname":cname};
+        console.log(company);
+        $.ajax({
+            url: "bookmarkData",
+            type: "post",
+            data: company,
+            success: (res) => {
+                if (res === "insert") {
+                    alert("찜 성공 ♥");
+                }
+                if (res === "delete") {
+                    alert("찜 삭제 ㅠㅠ");
+                }
+            },
+            error: (err) => {
+                console.log(err);
+            }
+        });
+    }
+
+    $("#evaluate").click(function () {
+        let category = $("#category").val();
+        let company = [[${hotel.hnum}]];
+        console.log(category, company);
+
+        location.href = "/Evaluate?category=" + category + "&company=" + company;
+
+
+    });
+
+    $("#backbtn").click(function () {
+        let company = $("#company").val();
+        location.href = "/HotelList";
+    });
 </script>
+
 </html>
+

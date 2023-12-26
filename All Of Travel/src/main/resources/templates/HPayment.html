@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>All Of Travel</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="Detail/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="css/login.css">
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <style>
+        .btn {
+            background-color: darkgray;
+            box-shadow: black 5px 5px 5px;
+            color: white;
+            font-weight: bolder;
+            width: 270px;
+            height: 50px;
+            margin-bottom: 30px;
+        }
+        .field{
+            width: 400px;
+            border: 1px darkgray groove;
+            margin-bottom: 50px;
+            margin-top: 10px;
+            padding: 20px;
+        }
+        .container {display: flex; }
+
+        article section {
+            border: 1px groove darkgray;
+            padding: 5px;
+            width: 350px;
+        }
+        #side {float: right; width: 400px; margin-top: 150px;}
+        form{display: flex;}
+        fieldset{width: 300px;}
+    </style>
+</head>
+<body>
+<!-- Responsive navbar-->
+<th:block th:insert="~{fragment::header(${session.member})}"></th:block>
+
+<!-- Page content-->
+<div class="container">
+    <th:block th:insert="~{fragment::menubar(${session.member})}"></th:block>
+    <div class="row">
+        <form th:action="@{hbookProc}" method="post" enctype="multipart/form-data">
+            <div class="col-lg-8">
+                <!-- Post content-->
+                <article><br><br>
+                    <h1>결제 페이지</h1>
+                    <figure class="mb-4"><img class="img-fluid rounded" th:src="${'upload/'+ hbook.horiname}"/></figure>
+                    <input type="hidden" name="horiname" th:value="${hbook.horiname}">
+                    <div class="container">
+                         <fieldset class="field">
+                                <legend>예약 정보</legend>
+                            <input type="hidden" id="roomnum" name="roomnum" th:value="${hbook.roomnum}">
+                            <input type="hidden" id="company" name="hnum" th:value="${hbook.hnum}">
+                            <input type="hidden" id="category" name="category" th:value="${hbook.category}">
+                            호텔 명 : <p class="text-muted fst-italic mb-2" th:text="${hbook.hname + '  호텔'}"></p>
+                            <input type="hidden" name="hname" th:value="${hbook.hname}">
+                            객실 명 : <p class="text-muted fst-italic mb-2" th:text="${hbook.rname + '  객실'}"></p>
+                            <input type="hidden" name="rname" th:value="${hbook.rname}">
+                            체크인 날짜 : <p class="text-muted fst-italic mb-2" th:text="${hbook.sdate}"></p>
+                            <input type="hidden" name="sdate" th:value="${hbook.sdate}">
+                            체크아웃 날짜 : <p class="text-muted fst-italic mb-2" th:text="${hbook.edate}"></p>
+                            <input type="hidden" name="edate" th:value="${hbook.edate}">
+                            체크인 시간 : <p class="text-muted fst-italic mb-2" th:text="${hbook.stime}"></p>
+                            <input type="hidden" name="stime" th:value="${hbook.stime}">
+                            체크아웃 시간 : <p class="text-muted fst-italic mb-2" th:text="${hbook.etime}"></p>
+                            <input type="hidden" name="etime" th:value="${hbook.etime}">
+                            투숙 인원수 : <p class="text-muted fst-italic mb-2" th:text="${hbook.count+'  명'}"></p>
+                            <input type="hidden" name="count" th:value="${hbook.count}">
+                            1일 숙박비 : <p class="text-muted fst-italic mb-2" th:text="${hbook.hprice+'  원'}"></p>
+                            <input type="hidden" name="hprice" th:value="${hbook.hprice}">
+                            총 숙박일수 : <p class="text-muted fst-italic mb-2" th:text="${totalDate+'  일'}"></p>
+                            <input type="hidden" name="totalDate" th:value="${totalDate}">
+                            총 숙박가격 : <p class="text-muted fst-italic mb-2" th:text="${totalPrice+'  원'}"></p>
+                            <input type="hidden" name="totalPrice" th:value="${totalPrice}">
+                            </fieldset>
+                            <fieldset  class="field">
+                                <legend>고객 정보</legend>
+                            고객 아이디 : <p class="text-muted fst-italic mb-2" th:text="${member.mid}"></p>
+                            <input type="hidden" name="mid" th:value="${member.mid}">
+                            고객 성 : <p class="text-muted fst-italic mb-2" th:text="${member.mlname}"></p>
+                            고객 이름 : <p class="text-muted fst-italic mb-2" th:text="${member.mfname}"></p>
+                            고객 전화번호 : <p class="text-muted fst-italic mb-2" th:text="${member.mphone}"></p>
+                            고객 이메일 : <p class="text-muted fst-italic mb-2" th:text="${member.memail}"></p>
+                            </fieldset>
+                    </div>
+                </article>
+            </div>
+            <div class="col-lg-4" id="side">
+                <h4> 결제 정보</h4>
+                <p class="text-muted fst-italic mb-2">예약금 : 10,000원 </p>
+                <p class="text-muted fst-italic mb-2">남은 잔금은 현장 결제 부탁드립니다. </p>
+                <!--  카카오페이 결제하기 넣을거라면?
+                  <label>
+                    <input type="radio" id="sendMoneyOption" name="paymentMethod" value="무통장 입금 체크박스"> 무통장 입금 체크박스
+                  </label>
+
+                  <label>
+                     <input type="radio" id="kakaoPayOption" name="paymentMethod" value="카카오페이 결제 체크박스"> 카카오페이 결제 체크박스
+                  </label>
+                 -->
+                <div class="card mb-4">
+                    <div class="card-header">무통장 입금</div>
+                    <div class="card-body">
+                        <div id="selectContainer" class="hidden">
+                            <label for="selectBox">계좌 번호</label>
+                            <select name="paymentMethod" id="selectBox">
+                                <option value="국민은행 : 7245-**-*-***">국민은행 : 7245-****-**-****</option>
+                                <option value="우리은행 : 101-*-**-***">우리은행 : 101-****-**-*****</option>
+                                <option value="신한은행 : 110-***-*-*-**">신한은행 : 110-***-***-**-***</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">동의하기</div>
+                    <div class="card-body">
+                        <div >
+                            <input type="checkbox" class="checkbox" id="agreeAll" onclick="checkAll()"> 모두 동의합니다
+                            <br>
+                            <input type="checkbox" class="checkbox" id="m_agree_terms" required> 이용 약관 동의
+                            <br>
+                            <input type="checkbox" class="checkbox" id="m_agree_privacy" required> 개인정보 수집 및 이용 동의
+                        </div>
+                    </div>
+                </div>
+                    <input type="submit" class="btn" value="Payment">
+                    <input type="button" class="btn" id="backbtn" value="Back">
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Footer-->
+<!-- Footer-->
+<footer>
+    <th:block th:insert="~{fragment::footer}"></th:block>
+</footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="Detail/js/scripts.js"></script>
+<script th:inline="javascript">
+    $("#backbtn").click(function () {
+        let roomnum = $("#roomnum").val();
+        location.href = "/RoomDetail?roomnum=" + roomnum;
+    });
+
+    /* 카카오페이 결제를 사용할거라면?
+        document.addEventListener('DOMContentLoaded', function() {
+            const sendMoneyOption = document.getElementById('sendMoneyOption');
+            const kakaoPayOption = document.getElementById('kakaoPayOption');
+            const selectContainer = document.getElementById('selectContainer');
+
+            // Hide selectContainer initially
+            selectContainer.style.display = 'none';
+
+            // Add event listeners to radio buttons
+            sendMoneyOption.addEventListener('click', toggleSelectBox);
+            kakaoPayOption.addEventListener('click', toggleSelectBox);
+
+            // Function to toggle select box visibility
+            function toggleSelectBox() {
+                // Check if sendMoneyOption is checked
+                if (sendMoneyOption.checked) {
+                    // If checked, show selectContainer
+                    selectContainer.style.display = 'block';
+                } else {
+                    // If not checked, hide selectContainer
+                    selectContainer.style.display = 'none';
+                }
+            }
+        });
+    */
+    function checkAll() {
+        const checkAll = $("#agreeAll");
+        const otherCheckboxes = $(".checkbox").not(checkAll);
+
+        if (checkAll.prop("checked")) {
+            otherCheckboxes.prop("checked", true);
+        } else {
+            otherCheckboxes.prop("checked", false);
+        }
+    }
+
+</script>
+
+</html>

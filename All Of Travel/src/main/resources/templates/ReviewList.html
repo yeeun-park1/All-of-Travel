@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ai-data board</title>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/prepro.css">
+    <script th:inline="javascript">
+        $(function () {
+            let m = [[${msg}]];
+            if (m != null) {
+                alert(m);
+            }
+        });
+    </script>
+    <style>
+        table {
+            padding: 3px;
+            margin: 20px;
+        }
+
+        th {
+            text-align: center
+        }
+
+        tr, td, th {
+            border: 1px groove darkgray;
+            border-radius: 5px;
+            padding: 3px;
+            text-align: center;
+
+        }
+
+        .box {
+            margin: 30px;
+            width: 1300px;
+            height: 100%;
+        }
+
+        #side {
+            float: right;
+            margin-left: 80px;
+            max-width: 600px;
+        }
+
+        .p-15 {
+            width: 120px;
+        }
+
+        #title {
+            width: 400px;
+        }
+
+        #date {
+            width: 220px;
+        }
+
+        section .container {
+            max-width: 1600px;
+        }
+        .btn-area .paging {
+            margin-right: 350px;
+        }
+
+
+    </style>
+
+</head>
+<body>
+<header>
+    <th:block th:insert="~{fragment::header(${session.member})}"/>
+</header>
+<section>
+    <div class="container maxw">
+        <th:block th:insert="~{fragment::menubar(${session.member})}"/>
+        <div class="box fadeInDown">
+            <h2 class="active" style="display: flex">Review List
+                <div class="card-body" style="padding: 0; margin-left: 570px; margin-bottom: 10px;">
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Enter a keyword" style="max-width: 450px;"
+                               id="keyword"/>
+                        <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                    </div>
+                </div>
+            </h2>
+            <p class="text-muted fst-italic mb-2">Share your experiences and Communicate each other!</p>
+            <p class="text-muted fst-italic mb-2" th:text="' 총 리뷰 개수 : ' + ${count} + '개'"></p>
+
+            <div class="content">
+                <div class="data-row">
+                    <th:block th:if="${#lists.isEmpty(reList)}">
+                        <div class="fadeIn second " style="margin-left: 355px; margin-bottom: 25px">
+                            <br><br>등록된 리뷰 목록이 없습니다.
+                        </div>
+                    </th:block>
+                    <div class="fadeIn second " style="display: flex">
+                        <th:block th:unless="${#lists.isEmpty(reList)}">
+                            <table>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Writer</th>
+                                    <th>Title</th>
+                                    <th>Date</th>
+                                    <th>view</th>
+                                </tr>
+                                <th:block th:each="review:${reList}">
+                                    <tr>
+                                        <td class="p-15" th:text="${review.category}"></td>
+                                        <input type="hidden" name="category" id="category"
+                                               th:value="${review.category}">
+                                        <td class="p-15" name="" th:text="${review.mid}"></td>
+
+                                        <td id="title" name="title"><a th:href="@{ReviewDetail(renum=${review.renum})}"><div th:text="${review.title}"/></a></td>
+
+                                        <td id="date" name="date" th:text="${review.redate}"></td>
+                                        <td id="views" name="views" th:text="${review.views}"></td>
+                                    </tr>
+                                </th:block>
+                            </table>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-area fadeIn second">
+                <div class="paging" th:utext="${paging}"></div>
+            </div>
+            <input type="button" class="btn" id="writebtn" value="WRITE">
+        </div>
+    </div>
+</section>
+<footer style="margin-top: 175px">
+    <th:block th:insert="~{fragment::footer}"/>
+</footer>
+</body>
+<script th:inline="javascript">
+    const pdto = [[${session.pdto}]];
+    let category = "";
+    console.log(pdto);
+    if(pdto != null){
+        category = pdto.category;
+    }
+    $("#button-search").click(function () {
+        //<button id="search">검색</button>이 클릭되면
+        let keyword = $("#keyword").val();
+        //let category = $("#category").val();
+        //<input type="text" id="keyword">의 value값을 가져와라
+        if (keyword == "") {
+            alert("검색어를 입력하세요");
+            return;
+        }
+        location.href = `ReviewList?keyword=${keyword}&category=${category}`;
+    });
+
+    $("#writebtn").hide();
+
+    let member = [[${session.member}]];//로그인한 ID
+    let mid = member.mid;
+
+    if (mid != null) {
+        $("#writebtn").show();
+    }
+
+    $("#writebtn").click(function () {
+        console.log(category);
+        location.href = `/WriteForm?mid=${mid}&category=${category}`;
+    });
+
+</script>
+
+<!-- Bootstrap core JavaScript -->
+<script src="list/vendor/jquery/jquery.min.js"></script>
+<script src="list/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</html>

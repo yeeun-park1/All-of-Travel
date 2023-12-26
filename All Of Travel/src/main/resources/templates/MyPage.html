@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>My Page</title>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/login.css">
+    <script th:inline="javascript">
+        $(function () {
+            let m = [[${msg}]];
+            if (m != null) {
+                alert(m);
+            }
+        });
+    </script>
+</head>
+<body>
+<header>
+    <th:block th:insert="~{fragment::header(${session.member})}"/>
+</header>
+<div class="container">
+    <div>
+        <th:block th:insert="~{fragment::menubar(${session.member})}"/>
+    </div>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <div class="loginandsingup">
+                <h2 class="active"> My Page </h2>
+            </div>
+            <div class="content">
+                <form>
+                    <div class="fadeIn second member" th:text="'ID : '+${session.member.mid}"></div>
+                    <div class="fadeIn second member" th:text="'이름 : '+${session.member.mlname}+${session.member.mfname}"></div>
+                    <div class="fadeIn second member" th:text="'성별 : '+${session.member.msex}"></div>
+                    <div class="fadeIn second member" th:text="'회원주소 : '+${session.member.madrr}"></div>
+                    <div class="fadeIn second member" th:text="'핸드폰번호 : '+${session.member.mphone}"></div>
+                    <div class="fadeIn second member" th:text="'이메일 : '+${session.member.memail}"></div>
+                    <div class="fadeIn second member" th:text="'나이 : '+${session.member.mage}"></div>
+                    <div class="fadeIn second member" th:text="'보유포인트 : '+${session.member.mpoint}"></div>
+                    <div class="fadeIn second member" th:text="'보유면허 : '+${session.member.mlicense}"></div>
+                    <input type="button" class="fadeIn second" value="정보수정" onclick="location.href='MypageUpdate'">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <th:block th:insert="~{fragment::footer}" />
+</footer>
+</body>
+<!-- Bootstrap core JavaScript -->
+<script src="list/vendor/jquery/jquery.min.js"></script>
+<script src="list/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</html>

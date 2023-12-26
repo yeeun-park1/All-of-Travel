@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aidata.aot.dao.MembershipDao">
+
+    <insert id="insertBookmark" parameterType="bookmarkDto" useGeneratedKeys="true" keyProperty="knum">
+        <selectKey keyProperty="knum" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO bookmark
+        VALUES (NULL, #{mid}, #{category}, #{company}, #{cname}, #{oriname}, #{url})
+    </insert>
+
+    <update id="updateMpoint" parameterType="membershipDto">
+        UPDATE member
+        Set mpoint = #{mpoint}
+        WHERE mid = #{mid}
+    </update>
+
+    <delete id="deleteBookmark" parameterType="BookmarkDto">
+        DELETE FROM bookmark
+        WHERE category=#{category} AND
+            company=#{company}
+    </delete>
+
+    <select id="selectHlogo" resultType="java.lang.String">
+        SELECT hlogo FROM hotel
+        WHERE hnum=#{company}
+    </select>
+
+    <select id="selectAlogo" resultType="java.lang.String">
+        SELECT alogo FROM air
+        WHERE anum=#{company}
+    </select>
+
+    <select id="selectRlogo" resultType="java.lang.String">
+        SELECT rlogo FROM rent
+        WHERE rnum=#{company}
+    </select>
+
+    <select id="selectLlogo" resultType="java.lang.String">
+        SELECT llogo FROM leisure
+        WHERE lnum=#{company}
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer" parameterType="pageDto">
+        SELECT count(*) FROM bookmark
+        WHERE category=#{category} AND
+            company=#{company}
+    </select>
+
+    <select id="selectListCount" resultType="java.lang.Integer" parameterType="pageDto">
+        SELECT count(*) FROM bookmark
+        WHERE mid=#{mid}
+        AND category =#{category}
+    </select>
+
+    <select id="selectBookmarkList" resultType="com.aidata.aot.dto.BookmarkDto" parameterType="pageDto">
+        SELECT * FROM bookmark
+        WHERE mid =#{mid}
+          AND category =#{category}
+            LIMIT #{pageNum}, #{listCnt}
+    </select>
+
+    <select id="selectKnum" resultType="java.lang.Integer">
+        SELECT knum FROM bookmark
+        WHERE mid=#{mid}
+    </select>
+
+    <select id="selectCategory" resultType="String" parameterType="Integer">
+        SELECT category FROM bookmark
+        WHERE knum=#{knum}
+    </select>
+
+    <insert id="insertMember" parameterType="MembershipDto">
+        INSERT INTO member VALUES (#{mid},#{mlname},#{mfname},#{msex},#{mpw},#{memail},#{mage},#{mphone},#{madrr},DEFAULT,#{mlicense})
+    </insert>
+    <update id="updateMemberPoint" parameterType="MembershipDto">
+        UPDATE member SET mpoint=#{mpoint} WHERE mid=#{mid}
+    </update>
+    <update id="updatePassword" parameterType="com.aidata.aot.dto.MembershipDto">
+        update member set mpw=#{mpw} where mid=#{mid}
+    </update>
+    <select id="selectId" resultType="Integer" parameterType="String">
+        SELECT count(*) FROM member WHERE mid=#{mid}
+    </select>
+    <select id="selectPassword" resultType="String" parameterType="String">
+        SELECT mpw FROM member WHERE mid=#{mid}
+    </select>
+    <select id="selectMember" resultType="MembershipDto" parameterType="String">
+        SELECT * FROM member WHERE mid=#{mid}
+    </select>
+    <update id="updateMember" parameterType="MembershipDto">
+        UPDATE member
+        SET mlname=#{mlname},mfname=#{mfname},msex=#{msex},memail=#{memail},mage=#{mage},mphone=#{mphone},madrr=#{madrr} WHERE mid=#{mid}
+ </update>
+
+    <select id="selectFoundId" resultType="java.lang.String" parameterType="String">
+        select mid from member where mlname=#{mlname} and mfname=#{mfname} and mphone=#{mphone}
+    </select>
+
+</mapper>

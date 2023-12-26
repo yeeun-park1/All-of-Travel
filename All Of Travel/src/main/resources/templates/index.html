@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>All of Travel</title>
@@ -27,78 +27,10 @@
 
 <body>
 
+
 <div class="preloader"></div>
 
-<div class="nav nav-overlay">
-    <div class="nav__content">
-        <div class="container">
-            <div class="row p-4 p-md-0 flex-column-reverse flex-md-row g-md-5 nav__block">
-                <div class="col-md-5">
-                    <ul class="nav__list d-none d-md-block">
-                        <li class="nav__list-item active-nav"><a href="index.html" class="hover-target">Home</a>
-                        </li>
-                        <li class="nav__list-item"><a href="HotelList" class="hover-target">HOTEL</a></li>
-                        <li class="nav__list-item"><a href="styles.html" class="hover-target">AIRLINE</a></li>
-                        <li class="nav__list-item"><a href="blog.html" class="hover-target">RENTCAR</a></li>
-                        <li class="nav__list-item"><a href="single-post.html" class="hover-target">LEISURE</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-4 text-white">
-                    <h3 class="text-white fw-bold nav__block-item">Community</h3>
-
-
-                    <ul class="list-unstyled nav__block-item">
-                        <li><a href="onepage.html" class="text-white">Hotel Review<span
-                                class="badge bg-primary"></span></a></li>
-                        <li><a href="styles.html" class="text-white">Airline Review<span
-                                class="badge bg-primary"></span></a></li>
-                        <li><a href="blog.html" class="text-white">Rentcar Review<span
-                                class="badge bg-primary"></span></a></li>
-                        <li><a href="single-post.html" class="text-white">Leisure Review<span
-                                class="badge bg-primary"></span></a></li>
-
-
-
-
-
-                        <ul class="list-unstyled text-light nav__block-item">
-
-                            <li class="menu-item">
-                                <i class="icon icon-location2 me-2"></i>인천광역시 미추홀구 매소홀로488번길 6-32
-                            </li>
-                            <li class="menu-item">
-                                <i class="icon icon-phone me-2"></i>+00 111 222 3333
-                            </li>
-                            <li class="menu-item">
-                                <i class="icon icon-envelope-o me-2"></i><a href="#"
-                                                                            class="text-white">alloftravel@google.com</a>
-                            </li>
-                </div>
-                <div class="col-md-3 text-white">
-                    <h3 class="text-white fw-bold nav__block-item">Membership</h3>
-                    <ul class="list-unstyled nav__block-item">
-                        <li><a href="onepage.html" class="text-white">My Page <span
-                                class="badge bg-primary"></span></a></li>
-                        <li><a href="styles.html" class="text-white">예약내역<span
-                                class="badge bg-primary"></span></a></li>
-                        <li><a href="blog.html" class="text-white">사용내역<span
-                                class="badge bg-primary"></span></a></li>
-                        <li><a href="single-post.html" class="text-white">찜한내역<span
-                                class="badge bg-primary"></span></a></li>
-
-
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="main-logo">
-    <a href="index.html">A.</a>
-</div>
+<th:block th:insert="~{fragment::index(${session.member})}"/>
 
 <div class="side-nav-bar">
     <input id="menu-toggle" type="checkbox" />
@@ -175,12 +107,12 @@
             </div>
             <div class="col-md-6 description text-lead">
                 <p><strong>환영합니다!</strong><br>
-                    <br> 여행의 모든 순간을 손쉽게 계획하고 예약할 수 있는 편리한 웹사이트에 오신 것을 환영합니다.
+                   <br> 여행의 모든 순간을 손쉽게 계획하고 예약할 수 있는 편리한 웹사이트에 오신 것을 환영합니다.
                     저희 사이트는 호텔, 항공편, 렌터카, 그리고 다양한 레저 활동까지 모두 통합적으로 예약할 수 있는 플랫폼입니다.</p>
                 <p>저희는 고객들에게 간편하고 안전한 여행을 제공하기 위해 최선을 다하고 있습니다. 최상의 서비스와 다양한 선택지로 여행 경험을 높여드립니다.
                     여행 계획을 세우고 예약하는 모든 순간, 저희와 함께하세요.
                     여행을 더욱 편안하게, 더욱 특별하게 만들어드립니다. 이제 여행의 모든 가능성을 펼쳐보세요!
-                </p>
+              </p>
 
 
             </div>
@@ -443,14 +375,14 @@
                             <article class="post-item">
 
                                 <figure>
-                                    <a href="#" class="image-hvr-effect">
+                                    <a href="/HotelDetail?company=2" class="image-hvr-effect">
                                         <img src="index/images/hotel1.jpg" alt="post" class="post-image">
                                     </a>
                                 </figure>
 
                                 <div class="post-content">
                                     <div class="meta-date"></div>
-                                    <h3 class="post-title"><a href="#">신라호텔</a></h3>
+                                    <h3 class="post-title"><a href="/HotelDetail?company=2">신라호텔</a></h3>
                                     <p>서울특별시 종로구</p>
                                 </div>
                             </article>
@@ -476,13 +408,13 @@
                         <div class="col-md-4">
                             <article class="post-item">
                                 <figure>
-                                    <a href="#" class="image-hvr-effect">
+                                    <a href="/RentDetail?company=1" class="image-hvr-effect">
                                         <img src="index/images/car1.jpg" alt="post" class="post-image">
                                     </a>
                                 </figure>
                                 <div class="post-content">
                                     <div class="meta-date"></div>
-                                    <h3 class="post-title"><a href="#">제주 렌트카 특가</a></h3>
+                                    <h3 class="post-title"><a href="/RentDetail?company=1">롯데 렌트카 특가</a></h3>
                                     <p>24시간 무료 이용권</p>
                                 </div>
                             </article>
@@ -608,12 +540,12 @@
                     <div class="testimonials-inner">
                         <q>저희 All Of Travel은 5년간 고객만족도조사에서 전세계 통합예약사이트에서 1위를 달성했습니다. 더 발전하는 All Of  Travel이 되겠습니다.</q>
 
+                        </div>
                     </div>
-                </div>
-            </div><!--reviews-content-->
+                </div><!--reviews-content-->
 
-        </div>
-    </div><!--grid-->
+            </div>
+        </div><!--grid-->
 
     </div>
 </section>
@@ -694,9 +626,9 @@
             </div>
 
 
-        </div>
+            </div>
 
-    </div>
+        </div>
     </div>
 </footer>
 

@@ -1,9 +1,6 @@
 package com.aidata.aot.dao;
 
-import com.aidata.aot.dto.HotelDto;
-import com.aidata.aot.dto.HotelFileDto;
-import com.aidata.aot.dto.PageDto;
-import com.aidata.aot.dto.RoomDto;
+import com.aidata.aot.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,9 +9,27 @@ import java.util.List;
 public interface HReservationDao {
     List<HotelDto> selectHotel(PageDto page);
 
-    List<RoomDto> selectRoomList(int hnum);
+    List<RoomDto> selectRoomList(int company);
 
-    List<HotelFileDto> selectHFileList(int hnum);
+    List<HotelFileDto> selectHFileList(int company);
 
-    String selectHname(int hnum);
+    RoomDto selectRoom(int roomnum);
+
+    HotelDto selectTheHotel(int company);
+
+    void insertHbook(HBookDto hbook);
+
+    HBookDto selectHbook(int book);
+
+    void deleteHbook(int hbnum);
+
+    Integer selectRprice(HBookDto hbook);
+
+    int selectHmax(HBookDto hbook);
+
+    void updateHbook(HBookDto hbook);
+
+    int selectRoomnum(HBookDto hbook);
+
+    int selectFhmax(int roomnum);
 }

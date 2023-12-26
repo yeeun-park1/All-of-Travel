@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" , initial-scale="1">
+    <title>findPwChange</title>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/login.css">
+    <script th:inline="javascript">
+        $(function () {
+            //메시지 출력
+            let m = [[${msg}]];
+            if (m != null) {
+                alert(m);
+            } //복사하여 index.html에도 넣기
+        });
+    </script>
+</head>
+<body>
+<header>
+    <th:block th:insert="~{fragment::header(${session.member})}"/>
+</header>
+<div class="container">
+    <div>
+    <th:block th:insert="~{fragment::menubar(${session.member})}"/>
+    </div>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+
+        <div class="loginandsingup">
+        <h2 class="active">비밀번호 변경</h2>
+        </div>
+
+            <form th:action="@{findPwUpdateProc}" method="post">
+
+                <input type="hidden" name="mid" th:value="${mid}">
+                <input type="password" class="fadeIn second" id="m_pwd" name="mpw" title="비밀번호" placeholder="비밀번호 변경">
+                <br>
+                <input type="password" class="fadeIn third" id="m_pwdCheck" title="비밀번호 확인" placeholder="비밀번호 변경 확인">
+                <br>
+                <input type="submit" class="fadeIn fourth" value="변경">
+            </form>
+        <div id="formFooter">
+            <a th:href="@{findId}" class="underlineHover"><button class="join-btn">아이디 찾기</button></a>
+            <br>
+            <a th:href="@{Login}" class="underlineHover"><button class="join-btn">로그인 하러 가기</button></a>
+        </div>
+    </div>
+    </div>
+</div>
+<footer>
+    <th:block th:insert="~{fragment::footer}"/>
+</footer>
+</body>
+<script th:inline="javascript">
+    function pwCheck() {
+        if ($("#m_pwd").val() === $("#m_pwdCheck").val()) {
+            $("#m_pwd, #m_pwdCheck").css("color", "green");
+        } else {
+            $("#m_pwd, #m_pwdCheck").css("color", "red");
+        }
+    }
+
+    $(document).ready(function () {
+        // 비밀번호 입력 시 비교 및 색상 변경
+        $("#m_pwd, #m_pwdCheck").keyup(function () {
+            pwCheck();
+        });
+    });
+</script>
+</html>

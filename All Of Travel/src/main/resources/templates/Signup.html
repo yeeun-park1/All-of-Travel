@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Sgin Up</title>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/login.css">
+
+</head>
+<body>
+<header>
+    <th:block th:insert="~{fragment::header(${session.member})}"/>
+</header>
+<div class="container">
+    <div>
+        <th:block th:insert="~{fragment::menubar(${session.member})}"/>
+    </div>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <div class="loginandsingup">
+                <h2 class="active"> Sign Up </h2>
+            </div>
+            <div class="content">
+                <form th:action="@{signupProc}" method="post"
+                      class="signup-form" name="jForm" onsubmit="return check()" id="myForm">
+                    <input type="text" class="fadeIn second" id="mid" name="mid" title="아이디" autofocus placeholder="아이디">
+                    <input type="button" class="idcheck-btn" value="중복확인" onclick="idcheck()">
+                    <input type="password" class="fadeIn second" name="mpw" id="mpw" title="비밀번호" placeholder="비밀번호" oninput="checkPasswordMatch()">
+                    <input type="password" class="fadeIn second" name="m_pw_confirm" id="m_pw_confirm" title="비밀번호 확인" placeholder="비밀번호 확인" oninput="checkPasswordMatch()">
+                    <span id="passwordMatchIcon"></span>
+                    <input type="text" class="fadeIn second" name="mlname" title="성" placeholder="성">
+                    <input type="text" class="fadeIn second" name="mfname" title="이름" placeholder="이름">
+                    <input type="number" class="fadeIn second" name="mage" title="나이" placeholder="나이">
+                    <div class="sung fadeIn second">
+                        <input type="radio" class="fadeIn second" name="msex" id="female" value="여성"><label for="female">여성</label>
+                        <input type="radio" class="fadeIn second" name="msex" id="male" value="남성"><label for="male">남성</label>
+                    </div>
+                    <input type="text" class="fadeIn second" name="mphone" title="연락처" placeholder="연락처">
+                    <input type="email" class="fadeIn second" name="memail" title="이메일" placeholder="이메일">
+                    <input type="text" class="fadeIn second" name="madrr" title="주소" placeholder="주소">
+
+                    <select class="sung fadeIn second" id="mlicense" name="mlicense" form="myForm">
+                        <option value="1종보통">운전면허 1종보통</option>
+                        <option value="2종보통">운전면허 2종보통</option>
+                        <option value="기타대형">기타대형</option>
+                        <option value="면허없음">운전면허 없음</option>
+                    </select>
+                    <div class="sung fadeIn second">
+                        <input type="checkbox" class="checkbox" id="agreeAll" onclick="checkAll()"> 모두 동의합니다
+                        &nbsp&nbsp&nbsp
+                        <input type="checkbox" class="checkbox" id="m_agree_terms"> 이용 약관 동의
+                        &nbsp&nbsp&nbsp&nbsp
+                        <input type="checkbox" class="checkbox" id="m_agree_privacy" > 개인정보 수집 및 이용 동의
+                    </div>
+
+                    <input type="submit" id="signupButton" class="signupButton" value="가입">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <th:block th:insert="~{fragment::footer}" />
+</footer>
+</body>
+<script th:inline="javascript">
+
+    let ck = false;
+
+    function idcheck(){
+        let id = $("#mid").val();
+        if(id == ""){
+            alert("아이디를 입력하세요");
+            $("#mid").focus();
+            return;
+        }
+
+        let sendObj = {"mid":id};
+
+        $.ajax({
+            url: "idCheck",
+            type: "get",
+            data: sendObj,
+            success: (res) => {
+                if(res == "ok"){//중복 안된 아이디
+                    alert("사용 가능한 아이디입니다.");
+                    ck = true;
+                } else {//중복된 아이디
+                    alert("사용할 수 없는 아이디입니다.");
+                    $("#mid").val("");//입력칸 지우기
+                    $("#mid").focus();
+                    ck = false;
+                }
+            },
+            error: (err) => {
+                console.log(err);
+                ck = false;
+            }
+        });
+    }
+    function checkPasswordMatch() {
+        var password = $("#mpw").val();
+        var confirmPassword = $("#m_pw_confirm").val();
+        var iconSpan = $("#passwordMatchIcon");
+
+        // 일치 여부 확인
+        if (password === confirmPassword) {
+            iconSpan.html("✔"); // 일치할 때 체크 표시
+            iconSpan.css("color", "green");
+        } else {
+            iconSpan.html("✖"); // 불일치할 때 엑스 표시
+            iconSpan.css("color", "red");
+        }
+    }
+
+    function check() {
+        //아이디 중복 체크 여부 확인
+        if (ck == false) {
+            alert("아이디 중복 확인을 해주세요.");
+            return false;
+        }
+
+        //form 태그의 내용 가져오기
+        const jfrm = document.jForm;
+        console.log(jfrm);
+        let length = jfrm.length - 1;//마지막 submit 제외
+        for (let i = 0; i < length; i++) {
+            if (jfrm[i].value == "" || jfrm[i] == null) {
+                //해당 입력칸을 작성하지 않았음.
+                alert(`${jfrm[i].title} 을/를 입력해주세요`);
+                jfrm[i].focus();
+                return false;
+            }
+            const femaleChecked = $("#female").is(":checked");
+            const maleChecked = $("#male").is(":checked");
+            if (!femaleChecked && !maleChecked) {
+                alert("성별을 선택해주세요.");
+                return false;
+            }
+
+            const agreeTerms = $("#m_agree_terms").is(":checked");
+            const agreePrivacy = $("#m_agree_privacy").is(":checked");
+
+
+            if (!agreeTerms || !agreePrivacy) {
+                alert("이용약관 및 개인정보 처리 방침에 동의해주세요.");
+                return false;
+            }
+        }
+        alert("가입이 완료되었습니다")
+            return true; // 모든 데이터가 입력되었으며, 동의도 받았으니 전송!
+    }
+    function checkAll() {
+        const checkAll = $("#agreeAll");
+        const otherCheckboxes = $(".checkbox").not(checkAll);
+
+        if (checkAll.prop("checked")) {
+            otherCheckboxes.prop("checked", true);
+        } else {
+            otherCheckboxes.prop("checked", false);
+        }
+    }
+</script>
+<!-- Bootstrap core JavaScript -->
+<script src="list/vendor/jquery/jquery.min.js"></script>
+<script src="list/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</html>

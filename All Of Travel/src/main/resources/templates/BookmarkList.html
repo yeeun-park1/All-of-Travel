@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ai-data board</title>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/prepro.css">
+    <script th:inline="javascript">
+        $(function () {
+            let m = [[${msg}]];
+            if (m != null) {
+                alert(m);
+            }
+        })
+    </script>
+    <style>
+      #bookmark{
+          width: 70px;
+          height: 70px;
+          align-self: center;
+          margin-bottom: 20px;
+         margin-right: 0px;
+      }
+    </style>
+</head>
+<body>
+<header>
+    <th:block th:insert="~{fragment::header(${session.member})}"/>
+</header>
+<section>
+    <div class="container">
+        <th:block th:insert="~{fragment::menubar(${session.member})}"/>
+        <div class="wrapper fadeInDown">
+            <h2 class="active">찜 목록</h2>
+            <p class="lead mb-0"> Keep your favorite products here!</p>
+            <p class="lead mb-0" th:text="' 총 찜 개수 : ' + ${count}"></p>
+            <div class="content">
+                <div class="data-row">
+                    <div class="fadeIn second">
+                        <button id="hotel" class="underlineHover button">hotel</button>
+                        <button id="air" class="underlineHover button">air</button>
+                        <button id="rentcar" class="underlineHover button">rent car</button>
+                        <button id="leisure" class="underlineHover button">leisure</button>
+                    </div>
+                    <th:block th:if="${#lists.isEmpty(klist)}">
+                        <div class="fadeIn second info" style="text-align: center">
+                            <br><br>등록된 찜 목록이 없습니다.
+                        </div>
+                    </th:block>
+
+                    <th:block th:unless="${#lists.isEmpty(klist)}">
+                        <th:block th:each="kitem:${klist}">
+                            <div class="fadeIn second info" style="display: flex; width: 500px">
+                                <a th:href="@{url(company=${kitem.company})}"></a>
+                                    <img id="img" th:src="${'upload/' + kitem.oriname}">
+                                <input type="hidden" id="company" th:value="${kitem.company}">
+                                <input type="hidden" id="category" th:value="${kitem.category}">
+                                <input type="hidden" id="cname" th:value="${kitem.cname}">
+                                    <div style="flex-direction: row">
+                                        <br>
+                                        <h1 style="margin-top: -15px; margin-right: 40px; word-break: break-all; width: 260px;" th:text="${kitem.cname}"/>
+                                    </div>
+                                </a>
+                                <img id="bookmark" src="images/sad.jpg" onclick="smile()">
+                            </div>
+                        </th:block>
+                    </th:block>
+                </div>
+            </div>
+            <div class="btn-area fadeIn second">
+                <div class="paging" th:utext="${paging}"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <th:block th:insert="~{fragment::footer}"/>
+</footer>
+</body>
+<script th:inline="javascript">
+
+    function smile() {
+        console.log("smile()");
+        var imageElement = document.getElementById("bookmark");
+
+        var currentImageSrc = imageElement.src;
+
+        if (currentImageSrc.endsWith("sad.jpg")) {
+            imageElement.src = "images/happy.jpg";
+//데이터를 전송
+            bookmarkData();
+        } else {
+            imageElement.src = "images/sad.jpg";
+            bookmarkData();
+        }
+    }
+
+    function bookmarkData() {
+        let ctg = $("#category").val();
+        let cpn = $("#company").val();
+        let cname = $("#cnamecname").val();
+
+        let se = [[${session.member}]];
+        let mid = "";
+        if(se != null){
+            mid = se.mid;
+        }
+        console.log(mid)
+        let company = {"company": cpn, "category": ctg, "cname": cname};
+        console.log(company);
+        $.ajax({
+            url: "bookmarkData",
+            type: "post",
+            data: company,
+            success: (res) => {
+                if (res === "insert") {
+                    alert("찜 성공 ♥");
+                }
+                if (res === "delete") {
+                    alert("찜 삭제 ㅠㅠ");
+                    location.href=`BookmarkList?mid=${mid}&category=${ctg}`;
+                }
+            },
+            error: (err) => {
+                console.log(err);
+            }
+        });
+    }
+
+    $("#hotel").click(function (){
+        location.href = "/BookmarkList?category=hotel"
+    });
+    $("#air").click(function (){
+        location.href = "/BookmarkList?category=air"
+    });
+    $("#rentcar").click(function (){
+        location.href = "/BookmarkList?category=rent"
+    });
+    $("#leisure").click(function (){
+        location.href = "/BookmarkList?category=leisure"
+    });
+
+</script>
+<!-- Bootstrap core JavaScript -->
+<script src="list/vendor/jquery/jquery.min.js"></script>
+<script src="list/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</html>

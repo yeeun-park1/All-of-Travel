@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aidata.aot.dao.LReservationDao">
+    <insert id="insertlbook" parameterType="LBookDto">
+        <selectKey keyProperty="lbnum" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO lbook
+        VALUES (null,#{tnum},#{lnum},#{mid},#{lname},#{ltel},#{laddr},#{llogo},#{tname},#{tdate},#{tinfo},#{tcount},#{ttotalprice},#{category},default)
+    </insert>
+    <select id="selectLeisureList" resultType="TlistDto" parameterType="PageDto">
+        SELECT * FROM leisure
+        <if test="keyword != null and keyword !=''">
+            WHERE lname LIKE CONCAT('%',#{keyword},'%')
+        </if>
+
+    </select>
+
+    <select id="selectTicket" resultType="TlistDto" parameterType="integer">
+        SELECT * FROM tlist WHERE lnum=#{company}
+    </select>
+
+    <select id="selectFile" resultType="LeisureFileDto" parameterType="integer">
+        SELECT * FROM leisurefile WHERE lnum=#{company}
+    </select>
+
+    <select id="selectinfo" resultType="TlistDto" parameterType="integer">
+        SELECT * FROM leisure WHERE lnum=#{company}
+    </select>
+    <select id="selecttname" resultType="String" parameterType="integer">
+        SELECT DISTINCT tname FROM ticket WHERE lnum=#{company}
+    </select>
+    <select id="selectTicketinfo" resultType="TlistDto">
+        SELECT * FROM tlist WHERE tnum=#{tnum}
+    </select>
+
+    <update id="changeLBook" parameterType="LBookDto">
+        UPDATE lbook SET lbnum=#{lbnum},tnum=#{tnum},lnum=#{lnum},ltel=#{ltel},laddr=#{laddr},llogo=#{llogo},tname=#{tname},tname=#{tname},tdate=#{tdate},tinfo=#{tinfo},tcount=#{tcount},ttotalprice=#{ttotalprice},category=#{category},status=#{status} WHERE lbnum=#{lbnum}
+    </update>
+    <delete id="deleteLBook" parameterType="Integer">
+        DELETE FROM lbook WHERE lbnum=#{lbnum}
+    </delete>
+    <select id="getLBookDetail" resultType="LBookDto">
+        SELECT * FROM lbook WHERE lbnum=#{book}
+    </select>
+    <select id="getTicket" resultType="TlistDto">
+        SELECT * FROM tlist WHERE lnum=#{lnum}
+    </select>
+
+</mapper>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>All Of Travel</title>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <script th:inline="javascript">
+        $(function () {
+            let m = [[${msg}]];
+            if(m != null){
+                alert(m);
+            }
+        })
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+            color: #495057;
+        }
+
+        header {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .write-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .ta {
+            resize: vertical;
+        }
+
+        .filebox {
+            margin-bottom: 15px;
+        }
+
+        .filebox label {
+            display: inline-block;
+            padding: 10px 15px;
+            color: #ffffff;
+            background-color: #007bff;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .filebox input {
+            display: none;
+        }
+
+        .filebox.upload-name {
+            width: calc(100% - 130px);
+            color: black;
+            margin-left: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .btn-area {
+            text-align: center;
+        }
+
+        .btn-write {
+            padding: 10px 15px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-write:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #343a40;
+            color: #ffffff;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <th:block th:insert="~{fragment::header(${session.member})}" />
+</header>
+<th:block th:insert="~{fragment::menubar(${session.member})}"/>
+<section>
+    <div class="content">
+        <form th:action="@{updateProc}" class="write-form"
+              method="post" enctype="multipart/form-data">
+            <div class="user-info">
+
+            </div>
+            <h2 class="login-header">리뷰 수정</h2>
+            <input type="hidden" name="mid" th:value="${reviewDto.mid}">
+            <input type="hidden" name="renum" th:value="${reviewDto.renum}">
+            <input type="text" class="write-input" name="title"
+                   autofocus placeholder="제목" required
+                   th:value="${reviewDto.title}">
+            <textarea rows="15" name="b_contents" class="write-input ta"
+                      th:text="${reviewDto.contents}"></textarea>
+            <div class="filebox">
+                <!-- 첨부된 파일 목록 출력 -->
+                <div id="bfile" style="margin-bottom: 10px">
+                    <th:block th:if="${#lists.isEmpty(fList)}">
+                        <label style="width: 100%">첨부파일 없음</label>
+                    </th:block>
+                    <th:block th:unless="${#lists.isEmpty(fList)}">
+                        <th:block th:each="fitem:${fList}">
+                            <label style="width: 100%"
+                                   th:sysname="${fitem.fsysname}"
+                                   th:onclick="del(this.getAttribute('sysname'))"
+                                   th:text="${fitem.foriname}"></label>
+                        </th:block>
+                    </th:block>
+                </div>
+                <!-- 새로운 파일 첨부 -->
+                <label for="file">파일추가</label>
+                <input type="file" id="file" name="files" multiple>
+                <input type="text" class="upload-name"
+                       value="파일선택" readonly>
+            </div>
+            <div class="btn-area">
+                <input type="submit" class="btn-write" value="수정완료">
+                <input type="button" class="btn-write" value="취소"
+                       id="backbtn">
+            </div>
+        </form>
+    </div>
+</section>
+<footer>
+    <th:block th:insert="~{fragment::footer}" />
+</footer>
+</body>
+<script th:inline="javascript">
+    $("#backbtn").click(function () {
+        let renum = [[${reviewDto.renum}]];
+        location.href = `/ReviewDetail?renum=${renum}`;
+    });
+
+    //파일 제목 처리
+    $("#file").on("change", function () {
+        let files = $("#file")[0].files;
+        console.log(files);
+
+        let fileName = "";//출력할 문장 저장 변수
+
+        if(files.length > 1){
+            fileName = `${files[0].name} 외 ${files.length - 1}개`;
+        } else if(files.length == 1){
+            fileName = files[0].name;
+        } else {
+            fileName = "파일선택";
+        }
+        $(".upload-name").val(fileName);
+    });
+
+    function del(sysname) {
+        console.log(sysname);
+        let cfm = confirm("해당 파일을 삭제하시겠습니까?");
+        if(cfm == false){
+            return;// 취소.
+        }
+
+        let sendObj = {"fsysname" : sysname};
+        sendObj.renum = [[${reviewDto.renum}]];
+        console.log(sendObj);
+
+        $.ajax({
+            url: "delFile",
+            type: "post",
+            data: sendObj,
+            success: function (res){
+                console.log(res.length);
+                //res.length == 0, res.length > 0
+                let flist = "";
+                if(res.length == 0){
+                    flist += '<label style="width: 100%">첨부파일 없음</label>';
+                } else {
+                    for(let f of res){
+                        flist += `<label style="width: 100%"
+                                         onclick="del('${f.fsysname}')">
+                                         ${f.foriname}</label>`;
+                    }
+                }
+                $("#bfile").html(flist);
+            },
+            error: function (err) {
+                console.log(err);
+                alert("파일 삭제에 실패했습니다.");
+            }
+        });
+    }
+</script>
+</html>

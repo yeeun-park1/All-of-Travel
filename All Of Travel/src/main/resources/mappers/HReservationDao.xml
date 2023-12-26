@@ -2,24 +2,66 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.aidata.aot.dao.HReservationDao">
 
+    <insert id="insertHbook" parameterType="hBookDto" useGeneratedKeys="true" keyProperty="hbnum">
+        <selectKey keyProperty="hbnum" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO hbook
+        VALUES (NULL, #{hnum}, #{roomnum}, #{mid}, #{hname}, #{horiname}, #{stime}, #{etime}, #{rname}, #{hprice}, #{count}, #{sdate}, #{edate}, #{totalPrice}, #{totalDate}, #{category}, DEFAULT)
+    </insert>
+
+    <update id="updateHbook" parameterType="HBookDto">
+        UPDATE hbook
+        SET roomnum=#{roomnum},  rname=#{rname}, hprice=#{hprice}, totalPrice=#{totalPrice}, count=#{count}
+        WHERE hbnum=#{hbnum}
+    </update>
+    <delete id="deleteHbook" parameterType="Integer">
+        DELETE FROM hbook WHERE hbnum=#{hbnum}
+    </delete>
+
     <select id="selectHotel" resultType="com.aidata.aot.dto.HotelDto" parameterType="com.aidata.aot.dto.PageDto">
         SELECT * FROM hotel
-        <if test="colname != null and colname != ''">
-            WHERE ${colname} LIKE CONCAT ('%', #{keyword}, "%")
+        <if test="keyword != null and keyword != ''">
+            WHERE hname LIKE CONCAT ('%', #{keyword}, "%")
         </if>
     </select>
 
     <select id="selectRoomList" resultType="com.aidata.aot.dto.RoomDto" parameterType="Integer">
         SELECT * FROM rlist
-        WHERE hnum=#{hnum}
+        WHERE hnum=#{company}
     </select>
 
     <select id="selectHFileList" resultType="com.aidata.aot.dto.HotelFileDto" parameterType="Integer">
         SELECT * FROM hotelfile
-        WHERE hnum=#{hnum}
+        WHERE hnum=#{company}
     </select>
-    <select id="selectHname" resultType="java.lang.String" parameterType="Integer">
-        SELECT hname FROM hotel
-        WHERE hnum=#{hnum}
+
+    <select id="selectRoom" resultType="com.aidata.aot.dto.RoomDto" parameterType="Integer">
+        SELECT * FROM rlist
+        WHERE roomnum=#{roomnum}
+    </select>
+    <select id="selectTheHotel" resultType="com.aidata.aot.dto.HotelDto">
+        SELECT * FROM hotel
+        WHERE hnum=#{company}
+    </select>
+    <select id="selectHbook" resultType="com.aidata.aot.dto.HBookDto" parameterType="Integer">
+        SELECT * FROM hbook
+        WHERE hbnum=#{book}
+    </select>
+    <select id="selectRprice" resultType="Integer" parameterType="HBookDto">
+        SELECT hprice FROM rlist
+        WHERE hnum=#{hnum} AND rname=#{rname}
+    </select>
+    <select id="selectHmax" resultType="java.lang.Integer" parameterType="HBookDto">
+        SELECT hmax FROM room
+        WHERE hnum=#{hnum} AND rname=#{rname}
+    </select>
+    <select id="selectRoomnum" resultType="java.lang.Integer">
+        SELECT roomnum FROM rlist
+        WHERE hnum=#{hnum} AND rname =#{rname}
+    </select>
+    <select id="selectFhmax" resultType="java.lang.Integer">
+        SELECT hmax FROM rlist
+        WHERE roomnum = #{roomnum}
     </select>
 </mapper>

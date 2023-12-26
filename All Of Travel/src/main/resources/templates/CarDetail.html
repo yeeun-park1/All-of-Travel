@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Blog Post - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+
+    <style>
+        section p {
+            border: 1px groove darkgray;
+            padding: 5px;
+        }
+        .btn {
+            background-color: darkgray;
+            box-shadow: black 5px 5px 5px;
+            color: white;
+            font-weight: bolder;
+            width: 270px;
+            height: 50px;
+            margin-bottom: 30px;
+        }
+        #side {float: right; margin-top: 150px;}
+        form{
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <th:block th:insert="~{fragment::header(${session.member})}"/>
+</header>
+<div class="container mt-5">
+    <th:block th:insert="~{fragment::menubar(${session.member})}"/>
+    <div class="row">
+        <form th:action="@{RPaymentProc}" method="post" id=carDetail enctype="multipart/form-data">
+            <div class="col-lg-8">
+                <header class="mb-4">
+
+                    <h1 class="fw-bolder mb-1">선택 차량 정보</h1>
+                    <div class="text-muted fst-italic mb-2"></div>
+                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">중형</a>
+                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">5인승</a>
+                </header>
+                <article>
+                    <!-- Preview image figure-->
+                    <figure class="mb-4"><img class="img-fluid rounded"
+                                              th:src="${'upload/'+cdto.coriname}"/></figure>
+                    <input type="hidden" name="coriname" th:value="${cdto.coriname}">
+                    <!-- Post content-->
+                    <section class="mb-5">
+                        <input type="hidden" name="rnum" th:value="${cdto.rnum}">
+                        <input type="hidden" name="cnum" th:value="${cdto.cnum}">
+                        <h1 class="fw-bolder mb-1" th:text="${cdto.rname}"></h1>
+                        <input type="hidden" name="rname" th:value="${cdto.rname}">
+                        <!-- 회사로고 -->
+                        <input type="hidden" name="rlogo" th:value="${cdto.rlogo}">
+                        <h5 class="fw-bolder mv-4 mt-5">차량명</h5>
+                        <p class="fs-5 mb-4" th:text="${cdto.cbrand}"/>
+                        <input type="hidden" name="cbrand" th:value="${cdto.cbrand}">
+                        <h5 class="fw-bolder mv-4 mt-5">대여 가격(기본 하루)</h5>
+                        <p class="fs-5 mb-4" th:text="${cdto.rprice}"/>
+                        <input type="hidden" name="rprice" th:value="${cdto.rprice}">
+                        <h5 class="fw-bolder mv-4 mt-5">차량 정보</h5>
+                        <p class="fs-5 mb-4" th:text="${cdto.cinfo}"></p>
+                        <h5 class="fw-bolder mb-4 mt-5">차량 정책</h5>
+                        <p class="fs-5 mb-4" th:text="${cdto.rpolicy}"></p>
+                    </section>
+                </article>
+            </div>
+
+
+            <div class="col-lg-5" id="side">
+                <div class="card mb-4">
+                    <div class="card-header">대여 기간</div>
+                    <div class="card-body">
+                        <div class="col-sm-6">
+                            <ul class="list-group">
+                                <li>START<input type="date" name="sdate"></li>
+                                <li>END<input type="date" name="edate"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                    <!-- Categories widget-->
+                    <div class="card mb-4">
+                        <div class="card-header">픽업 시간</div>
+                        <div class="card-body">
+                            <div class="col-sm-6">
+                                <ul class="list-group">
+                                    <li>PICK UP<input type="time" name="stime"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Side widget-->
+                    <div class="card mb-4">
+                        <div class="card-header">차량보험 선택</div>
+                        <div class="card-body">
+                            <select name="cinsuprice" id="insu">
+                                <option>차량 보험을 선택해주세요.</option>
+                                <option value="30000">일반 자차</option>
+                                <option value="70000">완전 자차</option>
+                                <option value="100000">슈퍼 자차</option>
+                            </select>
+                        </div>
+                    </div>
+            <button type="submit" value="Reservation" form="carDetail" class="btn btn-primary">예약하기</button>
+            <button type="button" id="backbtn" value="Back" input form="carDetail" class="btn btn-primary">뒤로가기</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+    <th:block th:insert="~{fragment::footer}"></th:block>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="detail/js/scripts.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+// 현재 날짜를 얻기 위한 함수
+function getCurrentDate() {
+const now = new Date();
+const year = now.getFullYear();
+const month = String(now.getMonth() + 1).padStart(2, '0');
+const day = String(now.getDate()).padStart(2, '0');
+return `${year}-${month}-${day}`;
+}
+
+// sdate 필드에 최소 날짜를 현재 날짜로 설정
+const sdateInput = document.querySelector('input[name="sdate"]');
+sdateInput.setAttribute('min', getCurrentDate());
+
+// sdate 필드가 변경될 때 edate 필드의 최소 날짜를 업데이트
+sdateInput.addEventListener('change', function () {
+const selectedDate = new Date(this.value);
+const nextDay = new Date(selectedDate);
+nextDay.setDate(selectedDate.getDate() + 1);
+
+const edateInput = document.querySelector('input[name="edate"]');
+edateInput.setAttribute('min', nextDay.toISOString().split('T')[0]);
+});
+});
+</script>
+
+</body>
+</html>

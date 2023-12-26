@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>All of Travel</title> <!--결제하기전에 뜨는 정보-->
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+    <style>
+        .btn {
+            background-color: darkgray;
+            box-shadow: black 5px 5px 5px;
+            color: white;
+            font-weight: bolder;
+            width: 270px;
+            height: 50px;
+            margin-bottom: 30px;
+        }
+
+        article section {
+            border: 1px groove darkgray;
+            padding: 5px;
+            width: 200px;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .field{
+            width : 400px;
+            border : 1px darkgray groove;
+            margin-bottom: 50px;
+            margin-top: 10px;
+            padding: 20px;
+        }
+        #side {float: right;}
+        form{display: flex;}
+        fieldset{width: 150px;}
+    </style>
+</head>
+<body>
+    <th:block th:insert="~{fragment::header(${session.member})}"/>
+<div class="container">
+    <th:block th:insert="~{fragment::menubar(${session.member})}"/>
+    <div class="row">
+        <form th:action="@{RBookProc}" method="post" id="rpayment" enctype="multipart/form-data">
+            <div class="col-lg-8">
+                <article>
+                    <h1>결제 페이지</h1> <br><br>
+                    <input type="hidden" name="cnum" th:value="${rbook.cnum}">
+                    <input type="hidden" name="rnum" th:value="${rbook.rnum}">
+                    <figure class="mb-4"><img class="img-fluid rounded" th:src="${'upload/'+rbook.coriname}" alt="씨빨"/>
+                    </figure>
+                    <input type="hidden" name="rlogo" th:value="${rbook.rlogo}">
+                    <input type="hidden" name="coriname" th:value="${rbook.coriname}">
+                    <div class="container">
+                        <fieldset class="field">
+                            <legend>예약 정보</legend>
+
+                            예약한 회사명 : <p class="text-muted fst-italic mb-2" th:text="${rbook.rname}"></p>
+                            <input type="hidden" name="rname" th:value="${rbook.rname}">
+                            예약한 차량명 : <p class="text-muted fst-italic mb-2" th:text="${rbook.cbrand}"></p>
+                            <input type="hidden" name="cbrand" th:value="${rbook.cbrand}">
+                            차량 대여 날짜 : <p class="text-muted fst-italic mb-2" th:text="${rbook.sdate}"></p>
+                            <input type="hidden" name="sdate" th:value="${rbook.sdate}">
+                            차량 반납 날짜 : <p class="text-muted fst-italic mb-2" th:text="${rbook.edate}"></p>
+                            <input type="hidden" name="edate" th:value="${rbook.edate}">
+                            차량 픽업 시간 : <p class="text-muted fst-italic mb-2" th:text="${rbook.stime}"></p>
+                            <input type="hidden" name="stime" th:value="${rbook.stime}">
+                            하루 대여 가격 : <p class="text-muted fst-italic mb-2" th:text="${rbook.rprice+' 원'}"></p>
+                            <input type="hidden" name="rprice" th:value="${rbook.rprice}">
+                            하루 보험 가격 : <p class="text-muted fst-italic mb-2" th:text="${rbook.cinsuprice+' 원'}"></p>
+                            <input type="hidden" name="cinsuprice" th:value="${rbook.cinsuprice}">
+                            총 이용일 수 : <p class="text-muted fst-italic mb-2" th:text="${totalDate+' 일'}"></p>
+                            <input type="hidden" name="totaldate" th:value="${totalDate}">
+                            총 결제 가격 : <p class="text-muted fst-italic mb-2" th:text="${totalPrice+' 원'}"></p>
+                            <input type="hidden" name="totalprice" th:value="${totalPrice}">
+                        </fieldset>
+
+                        <fieldset class="field">
+                            <div class="fs-5">고객 정보</div>
+                            고객 아이디 : <p class="text-muted fst-italic mb-2" th:text="${member.mid}"></p>
+                            <input type="hidden" name="mid" th:value="${member.mid}">
+                            고객 성 : <p class="text-muted fst-italic mb-2" th:text="${member.mlname}"></p>
+                            고객 이름 : <p class="text-muted fst-italic mb-2" th:text="${member.mfname}"></p>
+                            고객 전화번호 : <p class="text-muted fst-italic mb-2" th:text="${member.mphone}"></p>
+                            고객 이메일 : <p class="text-muted fst-italic mb-2" th:text="${member.memail}"></p>
+                        </fieldset>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-lg-4" id="side">
+
+                <h4> 결제 정보 </h4> <br>
+                    <p class="text-muted fst-italic mb-2">예약금 : 10,000원 </p>
+                    <p class="text-muted fst-italic mb-2">남은 잔금은 현장 결제 부탁드립니다. </p>
+                <br><br>
+                <div class="card-header">무통장 입금</div>
+                <div class="card-body">
+                    <div id="selectContainer" class="hidden">
+                        <label for="selectBox">계좌 번호</label>
+                    <select name="paymentMethod" id="selectBox">
+                        <option>은행을 선택해주세요</option>
+                        <option value="국민은행">국민은행</option>
+                        <option value="농협은행">농협은행</option>
+                        <option value="카카오뱅크">카카오뱅크</option>
+                        <option value="새마을금고">새마을금고</option>
+                        <option value="수협은행">수협은행</option>
+                        <option value="신협은행">신협은행</option>
+                        <option value="IBK기업은행">IBK기업은행</option>
+                    </select>
+                    </div>
+                </div>
+
+
+            <div class="card mb-4">
+                <div class="card-header">동의하기</div>
+                <div class="card-body">
+                    <div>
+                        <input type="checkbox" class="checkbox" id="agreeAll" onclick="checkAll()"> 모두 동의합니다
+                        <br>
+                        <input type="checkbox" class="checkbox" id="m_agree_terms" required> 이용 약관 동의
+                        <br>
+                        <input type="checkbox" class="checkbox" id="m_agree_privacy" required> 개인정보 수집 및 이용 동의
+                    </div>
+                </div>
+            </div>
+
+            <input type="submit" class="btn" form="rpayment" value="결제하기">
+            <button type="button" id="backbtn" value="Back" form="rpayment" class="btn">결제취소</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<footer class="py-5 bg-dark">
+    <th:block th:insert="~{fragment::footer}"></th:block>
+</footer>
+</body>
+<script th:inline="javascript">
+    $("#backbtn").click(function () {
+        let cnum = $("#cnum").val();
+        location.href = "/CarDetail?cnum=" + cnum;
+
+    });
+    function checkAll() {
+        const checkAll = $("#agreeAll");
+        const otherCheckboxes = $(".checkbox").not(checkAll);
+
+        if (checkAll.prop("checked")) {
+            otherCheckboxes.prop("checked", true);
+        } else {
+            otherCheckboxes.prop("checked", false);
+        }
+    }
+</script>
+</html>

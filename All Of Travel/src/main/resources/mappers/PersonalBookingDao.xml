@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aidata.aot.dao.PersonalBookingDao">
+
+    <insert id="insertEvaluate" parameterType="evaluateDto" useGeneratedKeys="true" keyProperty="evnum">
+        <selectKey keyProperty="evnum" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO evaluate
+        VALUES (NULL, #{mid}, #{category}, #{company},#{title}, #{review}, #{score}, DEFAULT)
+    </insert>
+
+    <update id="updateHavg" parameterType="EvaluateDto">
+        UPDATE hotel
+        SET havg = #{avg}
+        WHERE hnum=#{company}
+    </update>
+    <update id="updateAavg" parameterType="EvaluateDto">
+        UPDATE air
+        SET airavg = #{avg}
+        WHERE anum=#{company}
+    </update>
+    <update id="updateRavg" parameterType="EvaluateDto">
+        UPDATE rentCompany
+        SET rentavg = #{avg}
+        WHERE rnum=#{company}
+    </update>
+    <update id="updateLavg" parameterType="EvaluateDto">
+        UPDATE Leisure
+        SET lavg = #{avg}
+        WHERE lnum=#{company}
+    </update>
+
+    <select id="selectEval" resultType="com.aidata.aot.dto.EvaluateDto" parameterType="pageDto">
+        SELECT * FROM evaluate
+        WHERE category=#{category} AND
+              company=#{company}
+        LIMIT #{pageNum}, #{listCnt}
+    </select>
+    <select id="selectScore" resultType="java.lang.Integer" parameterType="pageDto">
+        SELECT score FROM evaluate
+        WHERE category=#{category} AND
+            company=#{company}
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer" parameterType="pageDto">
+        SELECT count(*) FROM evaluate
+            WHERE category=#{category} AND
+            company=#{company}
+    </select>
+
+
+
+    <select id="selectLBookCnt" resultType="Integer" parameterType="PageDto">
+        SELECT COUNT(*) FROM lbook
+    </select>
+    <select id="selectHPreList" resultType="PageDto" parameterType="PageDto">
+        SELECT hbnum as book, rname as goods, hname as cname, horiname as logo FROM hbook WHERE mid=#{mid} and status=#{status} ORDER BY hbnum DESC LIMIT #{pageNum}, #{listCnt}
+    </select>
+    <select id="selectAPreList" resultType="PageDto" parameterType="PageDto">
+        SELECT abnum as book, fname as goods, aname as cname, alogo as logo FROM abook WHERE mid=#{mid} and status=#{status} ORDER BY abnum DESC LIMIT #{pageNum}, #{listCnt}
+    </select>
+    <select id="selectRPreList" resultType="PageDto" parameterType="PageDto">
+        SELECT rbnum as book, cbrand as goods, rname as cname, rlogo as logo FROM rbook WHERE mid=#{mid} and status=#{status} ORDER BY rbnum DESC LIMIT #{pageNum}, #{listCnt}
+    </select>
+    <select id="selectLPreDList" resultType="PageDto" parameterType="PageDto">
+        SELECT lbnum as book, tname as goods, lname as cname, llogo as logo FROM lbook WHERE mid=#{mid} and status=#{status} ORDER BY lbnum DESC LIMIT #{pageNum}, #{listCnt}
+    </select>
+    <select id="countLPreDList" resultType="Integer" parameterType="PageDto">
+        SELECT COUNT(*) FROM lbook WHERE mid=#{mid} and status=#{status}
+    </select>
+    <select id="countRPreList" resultType="Integer" parameterType="PageDto">
+        SELECT COUNT(*) FROM rbook WHERE mid=#{mid} and status=#{status}
+    </select>
+    <select id="countAPreList" resultType="Integer" parameterType="PageDto">
+        SELECT COUNT(*) FROM abook WHERE mid=#{mid} and status=#{status}
+     </select>
+    <select id="countHPreList" resultType="Integer" parameterType="PageDto">
+        SELECT COUNT(*) FROM hbook WHERE mid=#{mid} and status=#{status}
+    </select>
+    <select id="selectHProList" resultType="PageDto" parameterType="PageDto">
+        SELECT hbnum as book, rname as goods, hname as cname, horiname as logo, hnum as company FROM hbook WHERE mid=#{mid} and status=#{status} ORDER BY hbnum DESC LIMIT #{pageNum}, #{listCnt}
+    </select>
+    <select id="selectAProList" resultType="PageDto" parameterType="PageDto">
+        SELECT abnum as book, fname as goods, aname as cname, alogo as logo, anum as company FROM abook WHERE mid=#{mid} and status=#{status} ORDER BY abnum DESC LIMIT #{pageNum}, #{listCnt}
+    </select>
+    <select id="selectRProList" resultType="PageDto" parameterType="PageDto">
+        SELECT rbnum as book, cbrand as goods, rname as cname, rlogo as logo, rnum as company FROM rbook WHERE mid=#{mid} and status=#{status} ORDER BY rbnum DESC LIMIT #{pageNum}, #{listCnt} </select>
+    <select id="selectLProDList" resultType="PageDto" parameterType="PageDto">
+        SELECT lbnum as book, tname as goods, lname as cname, llogo as logo, lnum as company FROM lbook WHERE mid=#{mid} and status=#{status} ORDER BY lbnum DESC LIMIT #{pageNum}, #{listCnt} </select>
+    <select id="countHProList" resultType="Integer" parameterType="PageDto">
+        SELECT COUNT(*) FROM hbook WHERE mid=#{mid} and status=#{status}
+    </select>
+    <select id="countAProList" resultType="Integer" parameterType="PageDto">
+        SELECT COUNT(*) FROM abook WHERE mid=#{mid} and status=#{status}
+    </select>
+    <select id="countRProList" resultType="Integer" parameterType="PageDto">
+        SELECT COUNT(*) FROM rbook WHERE mid=#{mid} and status=#{status}
+    </select>
+    <select id="countLProDList" resultType="Integer" parameterType="PageDto">
+        SELECT COUNT(*) FROM lbook WHERE mid=#{mid} and status=#{status}
+    </select>
+
+</mapper>

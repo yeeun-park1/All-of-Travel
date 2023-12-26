@@ -11,4 +11,7 @@ public class HotelDto {
     private String hemail;
     private String hlogo;
     private String hstar;
+    private Float hlati;
+    private Float hlong;
+    private Float havg;
 }

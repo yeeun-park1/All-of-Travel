@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aidata.aot.dao.RReservationDao">
+    <insert id="insertRbook" parameterType="com.aidata.aot.dto.rbookDto" useGeneratedKeys="true" keyProperty="rbnum">
+    <selectKey keyProperty="rbnum" resultType="Integer" order="AFTER">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+        INSERT INTO rbook
+        values (null,#{rnum},#{cnum},#{mid},#{rname},#{sdate},#{edate},#{rlogo},#{stime},#{rprice},#{cinsuprice},#{cbrand},#{totalprice},#{totaldate},#{coriname},#{cinsu},DEFAULT)
+    </insert>
+    <update id="updateRbook" parameterType="com.aidata.aot.dto.rbookDto">
+        UPDATE rbook
+        SET  cinsu=#{cinsu}, cinsuprice=#{cinsuprice}, totalprice=#{totalprice}
+        Where rbnum=#{rbnum}
+    </update>
+    <delete id="deleteRbook" parameterType="Integer">
+        DELETE FROM rbook WHERE rbnum=#{rbnum}
+    </delete>
+
+
+    <select id="selectRentList" resultType="com.aidata.aot.dto.RentDto" parameterType="com.aidata.aot.dto.PageDto">
+    SELECT * FROM rentcompany
+    <if test="keyword != null and keyword != ''">
+        WHERE rname LIKE CONCAT('%',#{keyword},'%')
+    </if>
+    </select>
+    <select id="selectCarList" resultType="com.aidata.aot.dto.clistDto" parameterType="Integer">
+        SELECT * FROM clist
+        WHERE rnum=#{rnum} AND
+            coriname LIKE '%1%'
+    </select>
+
+    <select id="selectFileList" resultType="com.aidata.aot.dto.RentFileDto" parameterType="Integer">
+        SELECT * FROM rentcarFile WHERE cnum=#{rnum} And coriname Like '%1%'
+    </select>
+
+    <select id="selectCarDetail" resultType="com.aidata.aot.dto.clistDto" parameterType="Integer">
+        SELECT * FROM clist WHERE cnum=#{cnum} And coriname Like '%1%'
+    </select>
+
+    <select id="selectTheRent" resultType="com.aidata.aot.dto.RentDto" parameterType="Integer">
+        SELECT * FROM rentcompany
+        where rnum=#{rnum}
+    </select>
+    <select id="selectCarFile" resultType="String" parameterType="Integer">
+        SELECT coriname FROM rentcarFile WHERE cnum=#{cnum}
+                                    And coriname Like '%1%'
+    </select>
+    <select id="selectCarInfo" resultType="com.aidata.aot.dto.rbookDto" parameterType="Integer">
+        SELECT rname, rlogo, rprice FROM clist Where cnum=#{cnum}
+    </select>
+    <select id="selectPayment" resultType="java.lang.String" parameterType="com.aidata.aot.dto.rbookDto">
+        select * from rbook where rbnum=#{rbnum}
+    </select>
+    <select id="selectRbook" resultType="com.aidata.aot.dto.rbookDto" parameterType="Integer">
+        SELECT * FROM rbook WHERE rbnum=#{rbnum}
+    </select>
+
+    <select id="selectCinsuprice" resultType="java.lang.Integer" parameterType="com.aidata.aot.dto.rbookDto">
+        SELECT cinsuprice From rbook WHERE rnum=#{rnum} AND cbrand=#{cbrand}
+    </select>
+
+    <select id="selectInsu" resultType="java.lang.String" parameterType="Integer">
+        SELECT insu from insu where insuprice=#{insuprice}
+    </select>
+    <select id="selectTotaldate" resultType="java.lang.Integer" parameterType="Integer">
+        SELECT totaldate from rbook where rbnum=#{rbnum}
+    </select>
+    <select id="selectRprice" resultType="java.lang.Integer" parameterType="Integer">
+        select rprice from rbook where rbnum=#{rbnum}
+    </select>
+</mapper>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>All Of Travel</title>
+
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+
+    <link href="list/css/styles.css" rel="stylesheet"/>
+
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+</head>
+<body>
+<th:block th:insert="~{fragment::header(${session.member})}"/>
+<header class="bg-light">
+    <div>
+        <div class="text-center">
+            <h1 class="fw-bolder">RENT</h1>
+            <p class="lead mb-0">Welcome to our Rent Reservation Website! Enjoy Your Trip!</p>
+        </div>
+    </div>
+</header>
+
+<!-- Page content-->
+<div class="container">
+    <th:block th:insert="~{fragment::menubar(${session.member})}"/>
+    <div class="row">
+        <!-- Blog entries-->
+        <div class="col-lg-8">
+            <!-- Featured blog post-->
+            <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                        <a href="RentDetail?rnum=1">
+                            <img class="d-block img-fluid" src="images/rent/lotte.jpg" alt="First slide">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="RentDetail?rnum=16">
+                            <img class="d-block img-fluid" src="images/rent/sk.jpg" alt="Second slide">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="RentDetail?rnum=18">
+                            <img class="d-block img-fluid" src="images/rent/thecar.jpg" alt="Third slide">
+                        </a>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                <div class="card-body">
+                    <div class="small text-muted">Happy Christmas!</div>
+                    <h2 class="card-title">Popular Rent Car for Christmas</h2>
+                </div>
+            </div>
+            <!-- Nested row for non-featured blog posts-->
+            <div class="row">
+                <th:block th:if="${#lists.isEmpty(rent)}">
+                    <div class="col-lg-6">
+                        등록된 렌트회사가 없습니다.
+                    </div>
+                </th:block>
+                <th:block th:unless="${#lists.isEmpty(rent)}">
+                    <th:block th:each="ritem:${rent}">
+                        <div class="col-lg-6">
+                            <a th:href="@{RentDetail(company=${ritem.rnum})}">
+                                <div class="card mb-4">
+                                    <img class="card-img-top" th:src="${'upload/'+ ritem.rlogo}">
+                                    <div class="card-body">
+                                        <h2 class="card-title" th:text="${ritem.rname}"></h2>
+                                        <p class="card-text" th:text="${ritem.raddr}"></p>
+                                        <p class="card-text" th:text="${ritem.rtel}"></p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-muted" th:text="${ritem.rentavg}"> / 10</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </th:block>
+                </th:block>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header">Search</div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Enter rent name"
+                               aria-label="Enter serach term..." aria-describedby="button-search" id="keyword"/>
+                        <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+    <th:block th:insert="~{fragment::footer}"></th:block>
+</footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="list/js/scripts.js"></script>
+<script src="list/vendor/jquery/jquery.min.js"></script>
+<script src="list/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+
+    $("#button-search").click(function () {
+        //<button id="search">검색</button>이 클릭되면
+        let keyword = $("#keyword").val();
+        //<input type="text" id="keyword">의 value값을 가져와라
+        if (keyword == ""){
+            alert("검색어를 입력하세요.");
+            return;
+        }
+        location.href=`RentList?keyword=${keyword}`;
+    });
+</script>
+</html>

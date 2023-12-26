@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>All Of Travel</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="Detail/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <style>
+        section p {
+            border: 1px groove darkgray;
+            padding: 5px;
+        }
+
+        .btn {
+            background-color: darkgray;
+            box-shadow: black 5px 5px 5px;
+            color: white;
+            font-weight: bolder;
+            width: 270px;
+            height: 50px;
+            margin-bottom: 30px;
+        }
+        form{
+            display: flex;
+        }
+        #side{
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<!-- Responsive navbar-->
+<th:block th:insert="~{fragment::header(${session.member})}"></th:block>
+
+<!-- Page content-->
+<div class="container">
+    <th:block th:insert="~{fragment::menubar(${session.member})}"></th:block>
+    <!--    <th:block th:insert="~{fragment::menubar(${session.member})}"></th:block>-->
+    <div class="row">
+        <form th:action="@{HPaymentProc}" method="post" enctype="multipart/form-data">
+            <div class="col-lg-8">
+                <article>
+                    <header class="mb-4"> <br>
+                <h1 class="fw-bolder mb-1" th:text="${room.hname} + ' 호텔'"></h1>
+                <input type="hidden" name="hname" th:value="${room.hname}">
+                <input type="hidden" id="company" name="hnum" th:value="${room.hnum}">
+                <input type="hidden" name="roomnum" th:value="${room.roomnum}">
+                <input type="hidden" name="category" th:value="${room.category}">
+                <!-- Post meta content-->
+                <div class="text-muted fst-italic mb-2" th:text="${room.rname} +'  객실'"></div>
+                    <input type="hidden" name="rname" th:value="${room.rname}">
+                <!-- Post categories-->
+                <div class="badge bg-secondary text-decoration-none link-light">Confortable</div>
+                <div class="badge bg-secondary text-decoration-none link-light" href="#!">Ramantic</div>
+            </header>
+                    <figure class="mb-4"><img class="img-fluid rounded" th:src="${'upload/'+ room.roriname}"/></figure>
+                    <input type="hidden" name="horiname" th:value="${room.horiname}">
+                    <!-- Post content-->
+                    <section class="mb-5">
+                        <div class="fs-5">Check In Time</div>
+                        <p type="text" class="text-muted fst-italic mb-2" th:text="${room.hcit}"></p>
+                            <input type="hidden" name="stime" th:value="${room.hcit}">
+                        <div class="fs-5">Check Out Time</div>
+                        <p type="text" class="text-muted fst-italic mb-2" th:text="${room.hcot}"></p>
+                            <input type="hidden" name="etime" th:value="${room.hcot}">
+                        <div class="fs-5">Maximum Occupancy</div>
+                        <p type="text" class="text-muted fst-italic mb-2" th:text="${room.hmax} +  '명'"></p>
+                            <input type="hidden" th:value="${room.hmax} +  '명'">
+                        <div class="fs-5">Entertainment</div>
+                        <p type="text" class="text-muted fst-italic mb-2" th:text="${room.hent}"></p>
+                            <input type="hidden" th:value="${room.hent}">
+                        <div class="fs-5">Amenity</div>
+                        <p type="text" class="text-muted fst-italic mb-2" th:text="${room.hamenity}">
+                            <input type="hidden" th:value="${room.hamenity}"></p>
+                        <div class="fs-5">Policy</div>
+                        <p type="text" class="text-muted fst-italic mb-2" th:text="${room.hpolicy}"></p>
+                            <input type="hidden" th:value="${room.hpolicy}">
+                    </section>
+                </article>
+            </div>
+            <!-- Side widgets-->
+            <div class="col-lg-4" id="side">
+                <!-- Categories widget-->
+                <br><br>
+                <div class="card mb-4">
+                    <div class="card-header">Price</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <h1 class="fw-bolder mb-1" th:text="${room.hprice} + ' 원'"></h1>
+                            <input type="hidden" name="hprice" th:value="${room.hprice}">
+                        </div>
+                    </div>
+                </div>
+                <!-- Side widget-->
+                <div class="card mb-4">
+                    <div class="card-header">DATE</div>
+                    <div class="card-body">
+                        <div class="col-sm-6">
+                            Check In Date : <input class="fw-bolder mb-1" type="date" name="sdate" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <ul class="list-unstyled mb-0">
+                                Check Out Date : <input class="fw-bolder mb-1" type="date" name="edate" required>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">Number of Guests</div>
+                    <div class="card-body">
+                        투숙 인원 :
+                        <select name="count" id="count">
+                            <option th:each="i : ${#numbers.sequence(1, room.hmax)}" th:value="${i}" th:text="${i}"
+                                    th:selected="${1 == room.hmax}"></option>
+                        </select>
+                    </div>
+                </div>
+                <input type="submit" class="btn" value="Reservation">
+                <input type="button" class="btn" id="backbtn" value="Back">
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <th:block th:insert="~{fragment::footer}"></th:block>
+</footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="Detail/js/scripts.js"></script>
+<script th:inline="javascript">
+    $("#backbtn").click(function () {
+        let company = $("#company").val();
+        location.href = "/HotelDetail?company=" + company;
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // 현재 날짜를 얻기 위한 함수
+        function getCurrentDate() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // sdate 필드에 최소 날짜를 현재 날짜로 설정
+        const sdateInput = document.querySelector('input[name="sdate"]');
+        sdateInput.setAttribute('min', getCurrentDate());
+
+        // sdate 필드가 변경될 때 edate 필드의 최소 날짜를 업데이트
+        sdateInput.addEventListener('change', function () {
+            const selectedDate = new Date(this.value);
+            const nextDay = new Date(selectedDate);
+            nextDay.setDate(selectedDate.getDate() + 1);
+
+            const edateInput = document.querySelector('input[name="edate"]');
+            edateInput.setAttribute('min', nextDay.toISOString().split('T')[0]);
+        });
+    });
+</script>
+
+</html>

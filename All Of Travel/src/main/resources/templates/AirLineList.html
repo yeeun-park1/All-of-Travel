@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>All Of Travel</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+</head>
+<body>
+<!-- Responsive navbar-->
+<th:block th:insert="~{fragment::header(${session.member})}"/>
+<!-- Page header with logo and tagline-->
+<header class="bg-light">
+    <div>
+        <div class="text-center">
+            <h1 class="fw-bolder">AirLine</h1>
+            <p class="lead mb-0">Welcome to our flight Reservation Website! Enjoy Your Trip!</p>
+        </div>
+    </div>
+</header>
+<!-- Page content-->
+<div class="container">
+    <th:block th:insert="~{fragment::menubar(${session.member})}"/>
+    <div class="row">
+        <!-- Blog entries-->
+        <div class="col-lg-8">
+            <!-- Featured blog post-->
+            <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                        <a href="FlightList?company=8">
+                            <img class="d-block img-fluid" src="images/airline/airline1_banner.jpg" alt="First slide">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="FlightList?company=14">
+                            <img class="d-block img-fluid" src="images/airline/airline2_banner.jpg" alt="Second slide">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="FlightList?company=7">
+                            <img class="d-block img-fluid" src="images/airline/airline3_banner.jpg" alt="Third slide">
+                        </a>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                <div class="card-body">
+                    <div class="small text-muted">Black Friday!</div>
+                    <h2 class="card-title">항공편도 블랙프라이데이 시작!  2024.01.01~</h2>
+
+                </div>
+            </div>
+            <!-- Nested row for non-featured blog posts-->
+            <div class="row">
+                <th:block th:if="${#lists.isEmpty(allist)}">
+                    <div class="col-lg-6">
+                        등록된 항공사가 없습니다.
+                    </div>
+                </th:block>
+                <th:block th:unless="${#lists.isEmpty(allist)}">
+                    <th:block th:each="alitem:${allist}">
+                        <div class="col-lg-6">
+                            <a th:href="@{FlightList(company=${alitem.anum})}">
+                                <div class="card mb-4">
+                                    <img class="card-img-top" th:src="${'upload/'+ alitem.alogo}">
+
+                                    <div class="card-body">
+                                        <h2 class="card-title h4" th:text="${alitem.aname}"></h2>
+                                        <p class="card-text" th:text="${alitem.aterminal}"></p>
+                                        <p class="card-text" th:text="${alitem.atell}"></p>
+                                        <p class="card-text" th:text="${alitem.aemail}"></p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-muted"th:text="${alitem.airavg}"> / 10</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </th:block>
+                </th:block>
+            </div>
+        </div>
+        <!-- Side widgets-->
+        <div class="col-lg-4">
+            <!-- Search widget-->
+            <div class="card mb-4">
+                <div class="card-header">Search</div>
+                <div class="card-body">
+
+                    <div class="input-group">
+                        <select class="form-select" name="colname" id="sel">
+                            <option value="d_airport">출발지</option>
+                            <option value="a_airport">도착지</option>
+                            <option value="aname">항공사</option>
+                        </select>
+                        <input class="form-control" type="text" name="keyword" id="keyword" placeholder=""
+                               aria-label="Enter search term..."/><br>
+                        <button class="btn btn-primary" id="search" type="submit">Go!</button>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Categories widget-->
+            <div class="card mb-4">
+                <div class="card-header">항공사 순위</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul class="list-unstyled mb-0">
+                                <li><a href="FlightList?company=1">1.대한항공</a></li>
+                                <li><a href="FlightList?company=2">2.아시아나</a></li>
+                                <li><a href="FlightList?company=3">3.제주항공</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <ul class="list-unstyled mb-0">
+                                <li><a href="FlightList?company=4">4.진에어</a></li>
+                                <li><a href="FlightList?company=5">5.티웨이항공</a></li>
+                                <li><a href="FlightList?company=6">6.델타항공</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Side widget-->
+            <div class="card mb-4">
+                <div class="card-header">impormation</div>
+                <div class="card-body">현재 전 카테고리 블랙프라이데이 행사중으로 사이트가 지연되고 있습니다. 고객 여러분들의 많은 양해 부탁드립니다.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+    <th:block th:insert="~{fragment::footer}"></th:block>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="list/js/scripts.js"></script>
+<script src="list/vendor/jquery/jquery.min.js"></script>
+<script src="list/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+<script>
+    $("#search").click(function (){
+        //사용자가 입력한 검색 키워드를 가져온다.
+        let keyword= $("#keyword").val();
+        if(keyword == ""){
+            alert("검색어를 입력하세요.");
+            return;
+        }
+        let select = $("#sel").val();
+        //검색용 uri 생성 및 실행(location.href)
+        location.href = `/AirLineList?colname=${select}&keyword=${keyword}&pageNum=1`;
+    })
+</script>
+</html>

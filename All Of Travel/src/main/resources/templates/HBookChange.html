@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>All Of Travel</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="Detail/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <style>
+        section p {
+            border: 1px groove darkgray;
+            padding: 5px;
+        }
+
+        .btn {
+            background-color: darkgray;
+            box-shadow: black 5px 5px 5px;
+            color: white;
+            font-weight: bolder;
+            width: 270px;
+            height: 50px;
+            margin-bottom: 30px;
+        }
+        .field{
+            width: 400px;
+            border: 1px darkgray groove;
+            margin-bottom: 50px;
+            margin-top: 10px;
+            padding: 20px;
+        }
+        #side {float: right; width: 400px; margin-top: 150px;}
+    </style>
+</head>
+<body>
+<!-- Responsive navbar-->
+<th:block th:insert="~{fragment::header(${session.member})}"></th:block>
+
+<!-- Page content-->
+<div class="container">
+    <th:block th:insert="~{fragment::menubar(${session.member})}"></th:block>
+    <div class="row">
+
+        <div class="col-lg-8">
+            <!-- Post content-->
+            <form id="proc" th:action="@{HBookUpdateProc}" method="post" enctype="multipart/form-data">
+            <article>
+                <header class="mb-4"> <br>
+                    <h1 class="fw-bolder mb-1"> 예약 변경 페이지</h1></header>
+                <figure class="mb-4"><img class="img-fluid rounded" th:src="${'upload/'+ hbook.horiname}"/></figure>
+                <input type="hidden" name="hnum" th:value="${hbook.hnum}">
+                <input type="hidden" name="hbnum" th:value="${hbook.hbnum}">
+                <div class="container">
+
+                    <fieldset class="field">
+                        <legend>예약 정보</legend>
+                        <p class="text-muted fst-italic mb-2" th:text="${' 호텔 명 : ' + hbook.hname}"></p>
+                        <br>
+                         객실 변경 : <select name="rname" id="rname" onchange="roomChanged()">
+                            <option value="스탠다드 트윈룸">스탠다드 트윈룸</option>
+                            <option value="스탠다드 더블룸">스탠다드 더블룸</option>
+                            <option value="디럭스 트윈룸">디럭스 트윈룸</option>
+                            <option value="디럭스 더블룸">디럭스 더블룸</option>
+                            <option value="패밀리 트윈룸">패밀리 트윈룸</option>
+                            <option value="패밀리 더블룸">패밀리 더블룸</option>
+                            <option value="패밀리 스위트">패밀리 스위트</option>
+                        </select>
+                        <br><br>
+                        <p class="text-muted fst-italic mb-2" th:text="${'체크인 날짜 : ' + hbook.sdate}"></p>
+                        <br>
+                        <p class="text-muted fst-italic mb-2" th:text="${'체크아웃 날짜 : ' + hbook.edate}"></p>
+                        <br>
+                        <p class="text-muted fst-italic mb-2" th:text="${'체크인 시간 :' + hbook.stime}"></p>
+                        <br>
+                        <p class="text-muted fst-italic mb-2" th:text="${'체크아웃 시간 : ' + hbook.etime}"></p>
+                        <br>
+                        투숙 인원 :
+                        <select name="count" id="count">
+                            <option th:each="i : ${#numbers.sequence(1, hmax)}" th:value="${i}" th:text="${i}"
+                                    th:selected="${1 == hmax}"></option>
+                        </select>
+                        <br><br>
+                        <div id="hprice" class="text-muted fst-italic mb-2"></div>
+                        <input type="hidden" name="hprice" id="realhp">
+                        <br>
+                        <p class="text-muted fst-italic mb-2" th:text="${'총 숙박일수 : ' + hbook.totalDate + '  일'}"></p>
+
+                        <br>
+                        <div id="totalPrice" class="text-muted fst-italic mb-2"></div>
+                        <input type="hidden" name="totalPrice" id="realtp">
+                    </fieldset>
+
+                    <fieldset  class="field">
+                        <legend>고객 정보</legend>
+                        <p class="text-muted fst-italic mb-2" th:text="${'고객 아이디 : ' + member.mid}"></p>
+                        <br>
+                        <p class="text-muted fst-italic mb-2" th:text="${'고객 성 : ' + member.mlname}"></p>
+                        <br>
+                        <p class="text-muted fst-italic mb-2" th:text="${'고객 이름 : ' + member.mfname}"></p>
+                        <br>
+                        <p class="text-muted fst-italic mb-2" th:text="${'고객 전화번호 : ' + member.mphone}"></p>
+                        <br>
+                        <p class="text-muted fst-italic mb-2" th:text="${'고객 이메일 : ' + member.memail}"></p>
+                    </fieldset>
+                </div>
+            </article>
+            </form>
+        </div>
+
+        <div class="col-lg-4" id="side">
+            <input type="submit" class="btn" value="Complete the Reservation" form="proc">
+            <button class="btn" id="backbtn" > Back to the Reservation Detail </button><br>
+            <button class="btn" id="Delete" > Cancel the Reservation </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- Footer-->
+<!-- Footer-->
+<footer>
+    <th:block th:insert="~{fragment::footer}"></th:block>
+</footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="Detail/js/scripts.js"></script>
+<script th:inline="javascript">
+    let hbnum = [[${hbook.hbnum}]];
+
+    $("#Delete").click(function () {
+        let con = confirm("예약을 정말 취소할까요?");
+        if(con == true) {
+            location.href = `/HBookDelete?hbnum=${hbnum}`;
+        }
+    });
+    $("#backbtn").click(function () {
+        location.href = `/HBookDetail?hbnum=${hbnum}`;
+    });
+    function roomChanged(){
+        var selectedRoom = $("#rname").val();
+        let hnum = [[${hbook.hnum}]];
+        let totalDate = [[${hbook.totalDate}]];
+        let obj = {"rname": selectedRoom, "hnum": hnum};
+        console.log(obj);
+        $.ajax({
+           type : "POST",
+           url : "roomChanged",
+           data : obj,
+           success : (res) => {
+               console.log(res);
+               $("#hprice").html("1일 숙박비 : " +res.hprice +"  원");
+               $("#realhp").val(res.hprice);
+               let totalPrice = res.hprice * totalDate;
+               $("#totalPrice").html("총 숙박비 : " +totalPrice +"  원");
+               $("#realtp").val(totalPrice);
+
+               let str = "";
+               for(let i = 1; i <= res.hmax; i++){
+                   if(i == res.hmax){
+                       str += `<option value="${i}" selected>${i}</option>`
+                   }
+                   else {
+                       str += `<option value="${i}">${i}</option>`
+                   }
+               }
+               $("#count").html(str);
+           },
+            error: function(error) {
+                // 오류 발생 시 처리
+                console.log(error);
+            }
+        });
+    }
+</script>
+
+</html>

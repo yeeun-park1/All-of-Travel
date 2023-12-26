@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>All Of Travel</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="list/css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core CSS -->
+    <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="list/css/shop-homepage.css" rel="stylesheet">
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <style>
+        article section {
+            border: 1px groove darkgray;
+            padding: 5px;
+        }
+
+        .btn {
+            background-color: darkgray;
+            box-shadow: black 5px 5px 5px;
+            color: white;
+            font-weight: bolder;
+            width: 480px;
+            height: 50px;
+            margin-bottom: 30px;
+        }
+
+        article {
+            margin-top: 80px;
+            margin-left: 100px;
+        }
+        .frame {
+            position: relative;
+            height: auto;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 16px;
+            display: block;
+            max-width: 400px;
+            line-height: 1.5;
+            color: #555;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        }
+    </style>
+</head>
+<body>
+<!-- Responsive navbar-->
+<th:block th:insert="~{fragment::header(${session.member})}"></th:block>
+
+<!-- Page content-->
+<div class="container">
+    <th:block th:insert="~{fragment::menubar(${session.member})}"></th:block>
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Post content-->
+            <article>
+                <form th:action="@{EvaluateProc}" method="post" enctype="multipart/form-data">
+                <section class="mb-5" id="boundry">
+                    <!--probooklist에서 category받아야됨 -->
+                    <input type="hidden" name="category" id="category" th:value="${category}">
+                    <!--probooklist에서 num받아야됨 -->
+                    <input type="hidden" name="company" th:value="${company}">
+                    <div class="fs-5">Writer</div>
+                    <input type="hidden" name="mid" th:value="${session.member.mid}">
+                    <div class="fs-5">Title</div>
+                    <input class="frame" type="text" name="title" id="title" autofocus placeholder="제목" required>
+                    <div class="fs-5">Review</div>
+                    <textarea class="frame" type="text" name="review" id="review" placeholder="후기를 작성해주세요"
+                              style="width: 400px;"
+                              required></textarea>
+                    <div class="fs-5">Score</div>
+                    <select name="score">
+                        <option value="1"> 1 점</option>
+                        <option value="2"> 2 점</option>
+                        <option value="3"> 3 점</option>
+                        <option value="4"> 4 점</option>
+                        <option value="5"> 5 점</option>
+                        <option value="6"> 6 점</option>
+                        <option value="7"> 7 점</option>
+                        <option value="8"> 8 점</option>
+                        <option value="9"> 9 점</option>
+                        <option value="10" selected> 10 점</option>
+                    </select>
+                </section>
+                <input type="submit" class="btn" value="Submit">
+                <input type="button" class="btn" id="backbtn" value="Back">
+                </form>
+            </article>
+        </div>
+    </div>
+</div>
+<!-- Footer-->
+<footer>
+    <th:block th:insert="~{fragment::footer}"></th:block>
+</footer>
+</body>
+<script th:inline="javascript">
+    $("#backbtn").click(function () {
+        let category = $("#category").val();
+        location.href = "/ProBookList?category="+category;
+    });
+</script>
+
+</html>

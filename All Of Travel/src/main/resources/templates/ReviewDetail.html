@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ai-data board</title>
+  <script src="js/jquery-3.7.1.min.js"></script>
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" href="list/assets/favicon.ico"/>
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="list/css/styles.css" rel="stylesheet"/>
+  <!-- Bootstrap core CSS -->
+  <link href="list/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="list/css/shop-homepage.css" rel="stylesheet">
+
+  <script th:inline="javascript">
+    $(function () {
+      let m = [[${msg}]];
+      if(m != null){
+        alert(m);
+      }
+    })
+  </script>
+  <style>
+    .p-10 {
+      width: 10%;
+    }
+    .p-15 {
+      width: 15%;
+    }
+    .p-20 {
+      width: 20%;
+    }
+    .p-30 {
+      width: 30%;
+    }
+    .p-35 {
+      width: 35%;
+    }
+    .p-50 {
+      width: 50%;
+    }
+    .p-85 {
+      width: 85%;
+    }
+
+    .dp-10 {
+      width: 10%;
+    }
+    .dp-15 {
+      width: 15%;
+    }
+    .dp-20 {
+      width: 20%;
+    }
+    .dp-30 {
+      width: 30%;
+    }
+
+    .btn-area {
+      margin: 0px auto;
+      width: 300px;
+      text-align: center;
+    }
+
+    .content_h {
+      height: 200px;
+      white-space: pre-line;
+      padding: 10px 0 10px 10px;
+      text-align: left;
+      overflow: auto;
+    }
+
+    .t_content {
+      display: block;
+      float: left;
+      color: white;
+      font-size: 16px;
+      line-height: 1.6;
+      text-align: center;
+      background-color: #6a6767;
+      border: 1px solid #ccc;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+      transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+      padding-left: 0!important;
+    }
+
+    .d_content {
+      display: block;
+      float: left;
+
+      font-size: 16px;
+      line-height: 1.6;
+      text-align: center;
+      background-color: #e7e7e7;
+      border: 1px solid #ccc;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+      transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      padding-top: 56px;
+    }
+
+    .write-form {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-top: 20px;
+      max-width: 1000px;
+    }
+
+    .file-title {
+      color: #007bff;
+      margin-right: 10px;
+    }
+
+    img {
+      margin: 5px;
+    }
+  </style>
+  <style>
+
+    .card1 {
+      padding: 20px;
+      border: 1px solid #ddd; /* 카드 테두리 스타일을 추가합니다. */
+      border-radius: 10px; /* 카드 테두리를 둥글게 만듭니다. */
+    }
+
+    .fw-bold {
+      font-weight: bold; /* 텍스트를 굵게 표시합니다. */
+    }
+
+    .flex-shrink-0 {
+      flex-shrink: 0; /* 요소가 수축되지 않도록 합니다. */
+    }
+  </style>
+  <style>
+    #rSpace {
+      display: flex;
+      flex-direction: column; /* 댓글을 수직으로 나열합니다. */
+      gap: 10px; /* 각 댓글 사이의 간격을 조절합니다. */
+      padding: 15px; /* 댓글 영역 주변의 간격을 조절합니다. */
+    }
+
+    .comment {
+      display: flex;
+      flex-direction: column; /* 각 댓글을 수직으로 나열합니다. */
+      gap: 5px; /* 각 항목 사이의 간격을 조절합니다. */
+      padding: 10px; /* 댓글 카드 주변의 간격을 조절합니다. */
+      border: 1px solid #ddd; /* 카드 테두리 스타일을 추가합니다. */
+      border-radius: 10px; /* 카드 테두리를 둥글게 만듭니다. */
+    }
+
+    .author {
+      font-weight: bold; /* 작성자 텍스트를 굵게 표시합니다. */
+    }
+
+    .content {
+      flex-grow: 1; /* 내용이 더 길어질 경우, 남은 공간을 모두 차지하도록 합니다. */
+    }
+
+    .date {
+      color: #888; /* 작성일 텍스트에 회색을 적용합니다. */
+    }
+    #rform {
+      margin-bottom: 20px;
+    }
+
+    .write-input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      resize: none; /* 사용자 크기 조절 비활성화 */
+    }
+
+    .btn-write {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-write:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <th:block th:insert="~{fragment::header(${session.member})}" />
+</header>
+
+<section>
+  <div class="container">
+    <th:block th:insert="~{fragment::menubar(${session.member})}"/>
+
+    <div class="content">
+      <div class="write-form">
+
+        <h2>상세 보기</h2> <br>
+
+        <div>
+          <div class="t_content p-15">WRITER</div>
+          <div class="d_content dp-15"
+               th:text="${review.mid}"></div>
+          <div class="t_content p-15">DATE</div>
+          <div class="d_content dp-30"
+               th:text="${review.redate}"></div>
+          <div class="t_content p-15">VIEWS</div>
+          <div class="d_content dp-10"
+               th:text="${review.views}"></div>
+        </div>
+        <div>
+          <div class="t_content p-15">TITLE</div>
+          <div class="d_content p-85"
+               th:text="${review.title}"></div>
+        </div>
+        <div>
+          <div class="t_content p-15">FILES</div>
+          <div class="d_content p-85 file_h"
+               style="overflow: auto">
+            <th:block th:if="${#lists.isEmpty(rfList)}">
+              첨부된 파일이 없습니다.
+            </th:block>
+            <th:block th:unless="${#lists.isEmpty(rfList)}">
+              <th:block th:each="fitem:${rfList}">
+                <a th:href="@{download(fsysname=${fitem.fsysname},
+                                                   bf_oriname=${fitem.foriname})}">
+                                <span class="file-title"
+                                      th:text="${fitem.foriname}"></span>
+                </a>
+              </th:block>
+            </th:block>
+          </div>
+        </div>
+        <div>
+          <th:block th:unless="${#lists.isEmpty(rfList)}">
+            <div class="t_content p-15 content_h">Picture</div>
+            <div class="d_content p-85 content_h" style="display: flex">
+              <th:block th:each="fitem:${rfList}">
+                <th:block th:if="${#strings.contains(fitem.foriname, '.jpg')}">
+                  <img th:src="@{upload/}+${fitem.fsysname}">
+                </th:block>
+                <th:block th:if="${#strings.contains(fitem.foriname, '.png')}">
+                  <img th:src="@{upload/}+${fitem.fsysname}">
+                </th:block>
+                <th:block th:if="${#strings.contains(fitem.foriname, '.gif')}">
+                  <img th:src="@{upload/}+${fitem.fsysname}">
+                </th:block>
+                <th:block th:if="${#strings.contains(fitem.foriname, '.webp')}">
+                  <img th:src="@{upload/}+${fitem.fsysname}">
+                </th:block>
+              </th:block>
+            </div>
+          </th:block>
+        </div>
+
+        <div>
+          <div class="t_content p-15 content_h">CONTENTS</div>
+          <div class="d_content p-85 content_h"
+               th:text="${review.contents}"></div>
+        </div>
+
+        <div class="btn-area">
+          <button class="btn btn-primary" id="upbtn">수정</button>
+          <button class="btn btn-primary" id="delbtn">삭제</button>
+          <button class="btn btn-primary" id="backbtn">뒤로가기</button>
+        </div>
+        <!-- 댓글 처리 부분(rest, ajax) -->
+        <!-- 댓글 전송 부분 -->
+        <form id="rform">
+          <input type="hidden" name="renum"
+                 th:value="${review.renum}">
+          <input type="hidden" name="mid"
+                 th:value="${mid}">
+          <textarea name="ccontents" rows="3"
+                    class="write-input ta" id="comment"
+                    placeholder="댓글을 적어주세요."></textarea>
+          <input type="button" value="댓글 전송"
+                 class="btn-write" id="rbtn"
+                 style="width: 100%; margin-bottom: 30px">
+        </form>
+        <!-- 댓글 출력 부분 -->
+        <div id="rSpace" class="card1">
+          <th:block th:each="ritem:${coList}">
+            <div class="comment">
+              <div class="author" th:text="'작성자 : '+ ${ritem.mid}"></div>
+              <div class="content" th:text="'내용 : '+ ${ritem.ccontents}"></div>
+              <div class="date" th:text="'작성일 : '+ ${ritem.codate}"></div>
+            </div>
+          </th:block>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<footer style="margin-top: 50px">
+  <th:block th:insert="~{fragment::footer}" />
+</footer>
+</body>
+<script th:inline="javascript">
+  //수정/삭제 버튼 숨기기
+  let mid = [[${mid}]];//로그인한 ID
+  let bid = [[${review.mid}]];//글 작성자 ID
+
+  if(mid == null || mid != bid){
+    $("#upbtn").hide();
+    $("#delbtn").hide();
+    $("#rform").hide();
+  }else{
+    $("#upbtn").show();
+    $("#delbtn").show();
+  }
+
+  $("#backbtn").click(function () {
+    let url = "/ReviewList?";
+
+    const PageDto = [[${session.page}]];
+    let colname = "";
+    let keyword = "";
+    if(PageDto != null){
+      colname = PageDto.colname;
+      keyword = PageDto.keyword;
+    }
+
+    let page = [[${session.pageNum}]];
+    let category = [[${review.category}]];
+
+    if(keyword == null || keyword == ""){//검색 안한 목록 이동
+      url += `category=${category}&pageNum=${page}`;
+    } else {//검색한 결과 목록으로 이동.
+      url += `keyword=${keyword}&category=${category}`;
+    }
+    //console.log(url);
+    location.href = url;
+  });
+
+  $("#delbtn").click(function () {
+    let con = confirm("게시글을 삭제합니다.");
+    if(con == true){
+      let renum = [[${review.renum}]];
+      location.href = `/ReviewDelete?renum=${renum}`;
+    }
+  });
+
+  $("#upbtn").click(function () {
+    let renum = [[${review.renum}]];
+    location.href = `/WriteUpdate?renum=${renum}`;
+  });
+
+  //댓글 전송 및 처리
+  $("#rbtn").click(function () {
+    const rForm = $("#rform").serialize();
+
+    //restcontroller에 전송
+    $.ajax({
+      url: "commentInsert",
+      type: "post",
+      data: rForm,
+      success: function (res) {
+        console.log(res);
+        if(res != null){
+          let str = "";
+          str += `
+                        <div class="fw-bold">
+                             ${res.mid}</div>
+                        <div class="fw-bold">
+                             ${res.ccontents}</div>
+                        <div class="fw-bold">
+                             ${res.codate}</div>
+                        `;
+          $("#rSpace").prepend(str);
+          $("#comment").val("");
+        } else {
+          alert("댓글 저장 실패");
+          $("#comment").val("");
+          $("#comment").focus();
+        }
+      },
+      error: function (err) {
+        console.log(err);
+        alert("댓글 저장 실패");
+      }
+    });
+  });
+</script>
+</html>
