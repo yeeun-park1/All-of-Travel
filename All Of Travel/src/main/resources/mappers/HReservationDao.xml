@@ -22,7 +22,7 @@
     <select id="selectHotel" resultType="com.aidata.aot.dto.HotelDto" parameterType="com.aidata.aot.dto.PageDto">
         SELECT * FROM hotel
         <if test="keyword != null and keyword != ''">
-            WHERE hname LIKE CONCAT ('%', #{keyword}, "%")
+            WHERE hname LIKE CONCAT ('%', #{keyword}, '%')
         </if>
     </select>
 

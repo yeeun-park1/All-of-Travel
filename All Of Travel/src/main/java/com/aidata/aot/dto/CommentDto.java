@@ -10,5 +10,5 @@ public class CommentDto {
     private int renum;
     private String mid;
     private Timestamp codate;
-    private String ccontents;
+    private String contents;
 }

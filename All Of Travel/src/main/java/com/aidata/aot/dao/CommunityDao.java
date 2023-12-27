@@ -49,4 +49,6 @@ public interface CommunityDao {
 
 
     ReviewDto selectReview2(int renum);
+
+    void updateViewPoint(ReviewDto rdto);
 }

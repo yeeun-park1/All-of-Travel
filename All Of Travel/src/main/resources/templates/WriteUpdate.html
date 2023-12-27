@@ -24,32 +24,29 @@
     </script>
     <style>
         body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f8f9fa;
-            color: #495057;
-        }
-
-        header {
-            background-color: #343a40;
-            color: #ffffff;
-            padding: 10px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
 
         .content {
             max-width: 800px;
-            margin: 0 auto;
             padding: 20px;
             background-color: #ffffff;
             border: 1px solid #dee2e6;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 200%; /* 가로폭 100%로 설정 */
+            margin-right: 350px;
+            max-height: 80vh; /* 최대 높이 설정 */
+            overflow-y: auto; /* 수직 스크롤을 추가합니다. */
         }
-
         .login-header {
             font-size: 24px;
             font-weight: bold;
-            margin-bottom: 20px;
+            /*margin-bottom: 20px;*/
         }
 
         .write-input {
@@ -62,31 +59,45 @@
         .ta {
             resize: vertical;
         }
-
-        .filebox {
-            margin-bottom: 15px;
+        .filebox input[type="file"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            padding: 0;
+            overflow: hidden;
+            border: 0;
         }
 
         .filebox label {
             display: inline-block;
-            padding: 10px 15px;
-            color: #ffffff;
+            padding: 10px 20px;
+            color: white;
+            vertical-align: middle;
             background-color: #007bff;
             cursor: pointer;
+            border:none;
             border-radius: 5px;
+            width: 20%;
+            text-align: center;
             font-weight: bold;
+
+
         }
 
-        .filebox input {
-            display: none;
-        }
+        .filebox .upload-name {
 
-        .filebox.upload-name {
-            width: calc(100% - 130px);
-            color: black;
-            margin-left: 10px;
-            padding: 10px;
-            box-sizing: border-box;
+
+            display: inline-block;
+            width: 79%;
+            height: 35px;
+            font-size: 16px;
+            padding: 0 10px;
+            vertical-align: middle;
+            background-color: #f5f5f5;
+            border: 1px solid #ebebeb;
+            border-radius: 5px;
+
+            margin-left: 2%; /* 적절한 간격 설정 */
         }
 
         .btn-area {
@@ -106,13 +117,11 @@
         .btn-write:hover {
             background-color: #0056b3;
         }
-
         footer {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #343a40;
-            color: #ffffff;
-            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
         }
     </style>
 </head>
@@ -125,16 +134,18 @@
     <div class="content">
         <form th:action="@{updateProc}" class="write-form"
               method="post" enctype="multipart/form-data">
+
             <div class="user-info">
 
             </div>
             <h2 class="login-header">리뷰 수정</h2>
+            <input type="hidden" name="category" th:value="${reviewDto.category}" />
             <input type="hidden" name="mid" th:value="${reviewDto.mid}">
             <input type="hidden" name="renum" th:value="${reviewDto.renum}">
             <input type="text" class="write-input" name="title"
                    autofocus placeholder="제목" required
                    th:value="${reviewDto.title}">
-            <textarea rows="15" name="b_contents" class="write-input ta"
+            <textarea rows="15" name="contents" class="write-input ta"
                       th:text="${reviewDto.contents}"></textarea>
             <div class="filebox">
                 <!-- 첨부된 파일 목록 출력 -->
@@ -150,12 +161,27 @@
                                    th:text="${fitem.foriname}"></label>
                         </th:block>
                     </th:block>
+
+<!--                    <th:block th:if="${#lists.isEmpty(fList)}">-->
+<!--                        첨부된 파일이 없습니다.-->
+<!--                    </th:block>-->
+<!--                    <th:block th:unless="${#lists.isEmpty(fList)}">-->
+<!--                        <th:block th:each="fitem:${fList}">-->
+<!--                            <a th:href="@{download(fsysname=${fitem.fsysname},-->
+<!--                                                   bf_oriname=${fitem.foriname})}">-->
+<!--                                <span class="file-title"-->
+<!--                                      th:text="${fitem.foriname}"></span>-->
+<!--                            </a>-->
+<!--                        </th:block>-->
+<!--                    </th:block>-->
                 </div>
                 <!-- 새로운 파일 첨부 -->
+                <div class="filebox">
                 <label for="file">파일추가</label>
                 <input type="file" id="file" name="files" multiple>
                 <input type="text" class="upload-name"
                        value="파일선택" readonly>
+                </div>
             </div>
             <div class="btn-area">
                 <input type="submit" class="btn-write" value="수정완료">
@@ -171,8 +197,10 @@
 </body>
 <script th:inline="javascript">
     $("#backbtn").click(function () {
+
         let renum = [[${reviewDto.renum}]];
-        location.href = `/ReviewDetail?renum=${renum}`;
+
+        location.href = `/ReviewDetail?renum=${renum}`
     });
 
     //파일 제목 처리
@@ -210,17 +238,17 @@
             success: function (res){
                 console.log(res.length);
                 //res.length == 0, res.length > 0
-                let flist = "";
+                let fList = "";
                 if(res.length == 0){
-                    flist += '<label style="width: 100%">첨부파일 없음</label>';
+                    fList += '<label style="width: 100%">첨부파일 없음</label>';
                 } else {
                     for(let f of res){
-                        flist += `<label style="width: 100%"
+                        fList += `<label style="width: 100%"
                                          onclick="del('${f.fsysname}')">
                                          ${f.foriname}</label>`;
                     }
                 }
-                $("#bfile").html(flist);
+                $("#bfile").html(fList);
             },
             error: function (err) {
                 console.log(err);

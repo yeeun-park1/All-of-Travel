@@ -5,7 +5,7 @@
         SELECT * FROM review
         WHERE category = #{category}
         <if test="keyword != null and keyword != ''">
-            AND title LIKE CONCAT ('%', #{keyword}, "%")
+            AND title LIKE CONCAT ('%', #{keyword}, '%')
         </if>
             LIMIT #{pageNum}, #{listCnt}
     </select>
@@ -13,7 +13,7 @@
         SELECT count(*) FROM review
         WHERE category =#{category}
         <if test="keyword != null and keyword != ''">
-            AND title LIKE CONCAT ('%', #{keyword}, "%")
+            AND title LIKE CONCAT ('%', #{keyword}, '%')
         </if>
     </select>
 
@@ -38,16 +38,21 @@
     </insert>
     <insert id="insertComment" parameterType="com.aidata.aot.dto.CommentDto" useGeneratedKeys="true" keyProperty="conum">
         <selectKey keyProperty="conum" resultType="Integer" order="AFTER"> SELECT LAST_INSERT_ID() </selectKey>
-        INSERT INTO comment values(NULL,#{renum},#{mid},DEFAULT,#{ccontents})
+        INSERT INTO comment values(NULL,#{renum},#{mid},DEFAULT,#{contents})
     </insert>
     <update id="updateReview" parameterType="ReviewDto">
         UPDATE review SET title=#{title},contents=#{contents} WHERE renum=#{renum}
+    </update>
+    <update id="updateViewPoint" parameterType="ReviewDto">
+        update review
+        set views=#{views}
+        where renum=#{renum}
     </update>
     <select id="getReview" resultType="com.aidata.aot.dto.ReviewDto" parameterType="integer">
         SELECT * FROM review WHERE renum=#{renum}
     </select>
     <select id="selectFileList" resultType="com.aidata.aot.dto.ReviewFileDto" parameterType="integer">
-        SELECT * FROM reviewfile WHERE fnum=#{renum}
+        SELECT * FROM reviewfile WHERE renum=#{renum}
     </select>
     <select id="selectReviewFile" resultType="com.aidata.aot.dto.ReviewFileDto" parameterType="Integer">
         SELECT * FROM reviewfile WHERE renum=#{renum}
@@ -56,7 +61,7 @@
         SELECT fsysname FROM reviewfile WHERE fnum=#{renum}
     </select>
     <select id="selectLastComment" resultType="com.aidata.aot.dto.CommentDto" parameterType="Integer">
-        ELECT * FROM comment WHERE conum=#{conum}
+        SELECT * FROM comment WHERE conum=#{conum}
     </select>
     <select id="selectReplyList" resultType="com.aidata.aot.dto.CommentDto" parameterType="Integer">
         SELECT * FROM comment WHERE renum=#{renum}

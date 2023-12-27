@@ -78,15 +78,15 @@
         SELECT COUNT(*) FROM hbook WHERE mid=#{mid} and status=#{status}
     </select>
     <select id="selectHProList" resultType="PageDto" parameterType="PageDto">
-        SELECT hbnum as book, rname as goods, hname as cname, horiname as logo, hnum as company FROM hbook WHERE mid=#{mid} and status=#{status} ORDER BY hbnum DESC LIMIT #{pageNum}, #{listCnt}
+        SELECT hbnum as book, rname as goods, hname as cname, horiname as logo, hnum as company, category FROM hbook WHERE mid=#{mid} and status=#{status} ORDER BY hbnum DESC LIMIT #{pageNum}, #{listCnt}
     </select>
     <select id="selectAProList" resultType="PageDto" parameterType="PageDto">
-        SELECT abnum as book, fname as goods, aname as cname, alogo as logo, anum as company FROM abook WHERE mid=#{mid} and status=#{status} ORDER BY abnum DESC LIMIT #{pageNum}, #{listCnt}
+        SELECT abnum as book, fname as goods, aname as cname, alogo as logo, anum as company, category FROM abook WHERE mid=#{mid} and status=#{status} ORDER BY abnum DESC LIMIT #{pageNum}, #{listCnt}
     </select>
     <select id="selectRProList" resultType="PageDto" parameterType="PageDto">
-        SELECT rbnum as book, cbrand as goods, rname as cname, rlogo as logo, rnum as company FROM rbook WHERE mid=#{mid} and status=#{status} ORDER BY rbnum DESC LIMIT #{pageNum}, #{listCnt} </select>
+        SELECT rbnum as book, cbrand as goods, rname as cname, rlogo as logo, rnum as company, category FROM rbook WHERE mid=#{mid} and status=#{status} ORDER BY rbnum DESC LIMIT #{pageNum}, #{listCnt} </select>
     <select id="selectLProDList" resultType="PageDto" parameterType="PageDto">
-        SELECT lbnum as book, tname as goods, lname as cname, llogo as logo, lnum as company FROM lbook WHERE mid=#{mid} and status=#{status} ORDER BY lbnum DESC LIMIT #{pageNum}, #{listCnt} </select>
+        SELECT lbnum as book, tname as goods, lname as cname, llogo as logo, lnum as company, category FROM lbook WHERE mid=#{mid} and status=#{status} ORDER BY lbnum DESC LIMIT #{pageNum}, #{listCnt} </select>
     <select id="countHProList" resultType="Integer" parameterType="PageDto">
         SELECT COUNT(*) FROM hbook WHERE mid=#{mid} and status=#{status}
     </select>

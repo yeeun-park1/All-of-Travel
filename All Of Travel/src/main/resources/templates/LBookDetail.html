@@ -112,7 +112,7 @@
                 <th:block th:unless="${lbook.status} == '이용 전'">
                     <div class="card-header">재미있게 즐기셨나요?</div>
                     <div class="card-body">
-                        <input type="submit" value="리뷰작성하기"/>
+                        <input type="submit" id="score" value="평점 작성하기"/>
                     </div>
                 </th:block>
             </div>
@@ -137,6 +137,11 @@ $("#delBook").click(function (){
         let lbnum = [[${lbook.lbnum}]];
         location.href = `/LBookDelete?lbnum=${lbnum}`;
     }
+});
+ $("#score").click(function (){
+    let company = [[${lbook.lnum}]];
+    let category = "[[${lbook.category}]]";
+    location.href = `/EvaluateWrite?company=${company}&category=${category}`;
 });
 </script>
 </html>

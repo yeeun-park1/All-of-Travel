@@ -119,7 +119,7 @@
                                                th:value="${review.category}">
                                         <td class="p-15" name="" th:text="${review.mid}"></td>
 
-                                        <td id="title" name="title"><a th:href="@{ReviewDetail(renum=${review.renum})}"><div th:text="${review.title}"/></a></td>
+                                        <td id="title" name="title"><a th:href="@{ReviewDetail(renum=${review.renum}, views=${review.views})}"><div th:text="${review.title}"/></a></td>
 
                                         <td id="date" name="date" th:text="${review.redate}"></td>
                                         <td id="views" name="views" th:text="${review.views}"></td>

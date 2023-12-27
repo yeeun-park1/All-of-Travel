@@ -85,18 +85,30 @@ public class CommunityService {
         return paging;
     }
 
-    public ModelAndView getReview(int renum,HttpSession session) {
+    public ModelAndView getReview(int renum,HttpSession session, ReviewDto rdto) {
         log.info("getReview()");
         ModelAndView mv = new ModelAndView();
 
         MembershipDto member = (MembershipDto) session.getAttribute("member");
+        //조회수 +1씩 증가
+        int views = rdto.getViews();
+        if (member.getMid().equals(rdto.getMid())) {
+            views += 0;
+            rdto.setViews(views);
+            cDao.updateViewPoint(rdto);
+        } else {
+            views++;
+            rdto.setViews(views);
+            cDao.updateViewPoint(rdto);
+        }
+        //조회수가 증가하게 세션에 저장
+        rdto = cDao.selectReview2(rdto.getRenum());
+        session.setAttribute("rdto", rdto);
 
         if (member != null){
             String mid = member.getMid();
             mv.addObject("mid", mid);
         }
-
-
         //게시글 번호로 선택한 게시물 가져오기
         ReviewDto review = cDao.selectReview2(renum);
         mv.addObject("review", review);
@@ -108,9 +120,7 @@ public class CommunityService {
         //게시글의 댓글목록 가져오기
         List<CommentDto> coList = cDao.selectReplyList(renum);
         mv.addObject("coList", coList);
-
         mv.setViewName("ReviewDetail");
-
         return mv;
     }
     public String reviewWrite(List<MultipartFile> files, ReviewDto reviewDto, HttpSession session, RedirectAttributes rttr, PageDto pageDto) {
@@ -216,7 +226,7 @@ public class CommunityService {
                 .body(fResource);
     }
 
-    public ModelAndView updateReview(int renum) {
+    public ModelAndView updateReview(int renum,PageDto pageDto) {
         log.info("updateReview()");
         ModelAndView mv = new ModelAndView();
         //게시글 내용 가져오기
@@ -226,6 +236,7 @@ public class CommunityService {
         //mv에 담기
         mv.addObject("reviewDto", reviewDto);//board
         mv.addObject("fList", fList);
+        mv.addObject("pageDto", pageDto);
         //템플릿 지정.
         mv.setViewName("WriteUpdate");
         return mv;
@@ -247,7 +258,10 @@ public class CommunityService {
             manager.commit(status);
 //            view = "redirect:ReviewDetail?renum="
 //                    + reviewDto.getRenum();
+            session.setAttribute("category", pageDto.getCategory());
             view = "redirect:ReviewList?pageNum=1&category=" + pageDto.getCategory();
+
+
             msg = "수정 성공";
         } catch (Exception e) {
             e.printStackTrace();
@@ -261,7 +275,7 @@ public class CommunityService {
         rttr.addFlashAttribute("msg", msg);
         return view;
     }
-    public String deleteReview(int renum, HttpSession session, RedirectAttributes rttr) {
+    public String deleteReview(int renum, HttpSession session, RedirectAttributes rttr, ReviewDto review,PageDto pageDto) {
         log.info("deleteReview()");
 
         //트랜잭션
@@ -287,7 +301,7 @@ public class CommunityService {
 
             manager.commit(status);
 
-            view = "redirect:ReviewList?pageNum=1";
+            view = "redirect:ReviewList?pageNum=1&category=" + pageDto.getCategory();
             msg = "삭제 성공";
         } catch (Exception e) {
             e.printStackTrace();
@@ -319,7 +333,7 @@ public class CommunityService {
         List<ReviewFileDto> fList = null;
 
         //파일 경로 설정
-        String realPath = session.getServletContext().getRealPath("index");
+        String realPath = session.getServletContext().getRealPath("/");
         realPath += "upload/" + rfFile.getFsysname();
 
         try {

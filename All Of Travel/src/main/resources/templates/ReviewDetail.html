@@ -205,13 +205,12 @@
 <section>
   <div class="container">
     <th:block th:insert="~{fragment::menubar(${session.member})}"/>
-
     <div class="content">
       <div class="write-form">
 
         <h2>상세 보기</h2> <br>
-
         <div>
+
           <div class="t_content p-15">WRITER</div>
           <div class="d_content dp-15"
                th:text="${review.mid}"></div>
@@ -237,7 +236,7 @@
             <th:block th:unless="${#lists.isEmpty(rfList)}">
               <th:block th:each="fitem:${rfList}">
                 <a th:href="@{download(fsysname=${fitem.fsysname},
-                                                   bf_oriname=${fitem.foriname})}">
+                                                   foriname=${fitem.foriname})}">
                                 <span class="file-title"
                                       th:text="${fitem.foriname}"></span>
                 </a>
@@ -285,7 +284,7 @@
                  th:value="${review.renum}">
           <input type="hidden" name="mid"
                  th:value="${mid}">
-          <textarea name="ccontents" rows="3"
+          <textarea name="contents" rows="3"
                     class="write-input ta" id="comment"
                     placeholder="댓글을 적어주세요."></textarea>
           <input type="button" value="댓글 전송"
@@ -297,7 +296,7 @@
           <th:block th:each="ritem:${coList}">
             <div class="comment">
               <div class="author" th:text="'작성자 : '+ ${ritem.mid}"></div>
-              <div class="content" th:text="'내용 : '+ ${ritem.ccontents}"></div>
+              <div class="content" th:text="'내용 : '+ ${ritem.contents}"></div>
               <div class="date" th:text="'작성일 : '+ ${ritem.codate}"></div>
             </div>
           </th:block>
@@ -316,13 +315,23 @@
   let mid = [[${mid}]];//로그인한 ID
   let bid = [[${review.mid}]];//글 작성자 ID
 
-  if(mid == null || mid != bid){
-    $("#upbtn").hide();
-    $("#delbtn").hide();
-    $("#rform").hide();
-  }else{
-    $("#upbtn").show();
-    $("#delbtn").show();
+  if (mid != null) {
+    // 로그인한 경우
+    if (mid === bid) {
+      // 작성자와 로그인 사용자가 같은 경우
+      $("#upbtn").show(); // 수정 버튼 표시
+      $("#delbtn").show(); // 삭제 버튼 표시
+    } else {
+      // 작성자와 로그인 사용자가 다른 경우
+      $("#upbtn").hide(); // 수정 버튼 숨김
+      $("#delbtn").hide(); // 삭제 버튼 숨김
+      $("#rform").show(); // 댓글 폼 표시
+    }
+  } else {
+    // 로그인하지 않은 경우
+    $("#rform").hide(); // 댓글 폼 숨김
+    $("#upbtn").hide(); // 수정 버튼 숨김
+    $("#delbtn").hide(); // 삭제 버튼 숨김
   }
 
   $("#backbtn").click(function () {
@@ -349,10 +358,12 @@
   });
 
   $("#delbtn").click(function () {
+
     let con = confirm("게시글을 삭제합니다.");
     if(con == true){
       let renum = [[${review.renum}]];
-      location.href = `/ReviewDelete?renum=${renum}`;
+      let category = [[${review.category}]];
+      location.href = `/ReviewDelete?&category=${category}&renum=${renum}`;
     }
   });
 
@@ -378,7 +389,7 @@
                         <div class="fw-bold">
                              ${res.mid}</div>
                         <div class="fw-bold">
-                             ${res.ccontents}</div>
+                             ${res.contents}</div>
                         <div class="fw-bold">
                              ${res.codate}</div>
                         `;

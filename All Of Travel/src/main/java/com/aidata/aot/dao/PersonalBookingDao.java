@@ -60,4 +60,5 @@ public interface PersonalBookingDao {
     List<PageDto> selectRPreList(PageDto pdto);
 
     List<PageDto> selectLPreDList(PageDto pdto);
+
 }

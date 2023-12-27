@@ -36,17 +36,17 @@ public class CommunityController {
         return mv;
     }
     @GetMapping("ReviewDetail")
-    public ModelAndView ReviewDetail(int renum, HttpSession session){
+    public ModelAndView ReviewDetail(int renum, HttpSession session, ReviewDto rdto){
         log.info("ReviewDetail()", renum);
-        ModelAndView mv = cServ.getReview(renum, session);
+        ModelAndView mv = cServ.getReview(renum, session, rdto);
         return mv;
     }
 
     //리뷰게시글 삭제
     @GetMapping("ReviewDelete")
-    public String ReviewDelete(int renum, HttpSession session, RedirectAttributes rttr){
+    public String ReviewDelete(int renum, HttpSession session, RedirectAttributes rttr, ReviewDto review,PageDto pageDto){
         log.info("ReviewDelete()");
-        String view = cServ.deleteReview(renum, session, rttr);
+        String view = cServ.deleteReview(renum, session, rttr,review,pageDto);
         return view;
     }
 
@@ -76,9 +76,9 @@ public class CommunityController {
         return resp;
     }
     @GetMapping("WriteUpdate")
-    public ModelAndView WriteUpdate(int renum) {
+    public ModelAndView WriteUpdate(int renum, ReviewDto review, Model model,PageDto pageDto) {
         log.info("WriteUpdate()");
-        ModelAndView mv = cServ.updateReview(renum);
+        ModelAndView mv = cServ.updateReview(renum,pageDto);
         return mv;
     }
 
@@ -86,9 +86,9 @@ public class CommunityController {
     public String updateProc(List<MultipartFile> files,
                              ReviewDto reviewDto,
                              HttpSession session,
-                             RedirectAttributes rttr,PageDto pageDto){
+                             RedirectAttributes rttr, PageDto pageDto){
         log.info("updateProc()");
-        String view = cServ.updateReview(files, reviewDto, session, rttr,pageDto);
+        String view = cServ.updateReview(files, reviewDto, session, rttr, pageDto);
         return view;
     }
 

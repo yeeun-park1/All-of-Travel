@@ -1,8 +1,7 @@
 package com.aidata.aot.controller;
 
-import com.aidata.aot.dto.BookmarkDto;
-import com.aidata.aot.dto.HBookDto;
-import com.aidata.aot.dto.PageDto;
+import com.aidata.aot.dto.*;
+import com.aidata.aot.service.CommunityService;
 import com.aidata.aot.service.HotelRsvService;
 import com.aidata.aot.service.MembershipService;
 import jakarta.servlet.http.HttpSession;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,6 +23,9 @@ public class TotalRestController {
     private MembershipService mServ;
     @Autowired
     private HotelRsvService hServ;
+    @Autowired
+    private CommunityService cServ;
+
 
     @PostMapping("bookmarkData")
     public String bookmarkData(BookmarkDto kdto, HttpSession session, PageDto pdto){
@@ -42,5 +45,19 @@ public class TotalRestController {
         log.info("roomChanged()");
         Map<String, Integer> hinfo = hServ.roomChanged(hbook);
         return hinfo;
+    }
+
+    @PostMapping("delFile")
+    public List<ReviewFileDto> delFile(ReviewFileDto rfFile, HttpSession session){
+        log.info("delFile()");
+        List<ReviewFileDto> fList = cServ.delFile(rfFile, session);
+        return fList;
+    }
+
+    @PostMapping("commentInsert")
+    public CommentDto commentInsert(CommentDto comment){
+        log.info("commentInsert()");
+        comment = cServ.commentInsert(comment);
+        return comment;
     }
 }

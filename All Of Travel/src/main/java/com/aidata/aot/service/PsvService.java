@@ -32,11 +32,12 @@ public class PsvService {
     private String pre = "이용 전";
     private String pro = "이용 후";
 
-    public ModelAndView getEval(Model model, PageDto pdto) {
+    public ModelAndView getEval(PageDto pdto) {
         log.info("getEval()");
 
         ModelAndView mv = new ModelAndView();
         pdto.setListCnt(6);
+        List<Integer> score = pDao.selectScore(pdto);
 
         int num = pdto.getPageNum();
         pdto.setPageNum((num-1)*pdto.getListCnt());
@@ -45,8 +46,17 @@ public class PsvService {
         mv.addObject("elist", elist);
 
         int count = pDao.selectCount(pdto);
+        int total = 0;
+        Float avg = 0.f;
+        if (count != 0) {
+            for (int c : score) {
+                total += c;
 
-        model.addAttribute("count", count);
+            }
+            avg = (float) total / count;
+        }
+        mv.addObject("avg", avg);
+        mv.addObject("count", count);
 
         pdto.setPageNum(num);
         String paging = getPaging(pdto);
@@ -136,8 +146,8 @@ public class PsvService {
         MembershipDto member = (MembershipDto) session.getAttribute("member");
         int point = member.getMpoint() + 10;
 
-        if (point > 100) {//point가 100을 넘지 않도록 필터링
-            point = 100;
+        if (point > 1000) {//point가 100을 넘지 않도록 필터링
+            point = 1000;
         }
 
         member.setMpoint(point);

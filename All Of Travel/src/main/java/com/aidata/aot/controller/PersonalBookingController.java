@@ -21,9 +21,9 @@ public class PersonalBookingController {
     private PsvService pServ;
 
     @GetMapping("Evaluate")
-    public ModelAndView Evaluate(Model model, PageDto pdto){
+    public ModelAndView Evaluate(PageDto pdto){
         log.info("Evaluate()");
-        ModelAndView mv = pServ.getEval(model, pdto);
+        ModelAndView mv = pServ.getEval( pdto);
         return mv;
     }
 
