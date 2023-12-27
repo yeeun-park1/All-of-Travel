@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>여신티켓</title>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script th:inline="javascript">
+        $(function () {
+            let m = [[${msg}]];
+            if (m != null) {
+                alert(m);
+            }
+        })
+    </script>
+</head>
+<body>
+<header>
+    <th:block th:insert="~{fragments::header(${customer})}"/>
+</header>
+<section>
+    <div class="content">
+        <form th:action="@{JoinProc}" method="post"
+              class="login-form" name="jForm"
+              onsubmit="return check()">
+            <h2 class="login-header">회원 가입</h2>
+            <input type="text" class="login-input" id="cid"
+                   name="cid" title="아이디" autofocus
+                   placeholder="아이디">
+            <input type="button" class="idcheck-btn"
+                   value="중복확인" onclick="idcheck()">
+            <input type="password" class="login-input"
+                   name="cpassword" title="비밀번호"
+                   placeholder="비밀번호">
+            <input type="text" class="login-input"
+                   name="cname" title="이름"
+                   placeholder="이름">
+            <input type="date" class="login-input"
+                   name="cbirth" title="생일"
+                   placeholder="생일">
+            <input type="text" class="login-input"
+                   name="cemail" title="이메일"
+                   placeholder="이메일">
+            <select name="csex" class="login-input" title="성별">
+                <option value="">성별</option>
+                <option value="여자">여자</option>
+                <option value="남자">남자</option>
+            </select>
+            <input type="text" class="login-input"
+                   name="cnick" title="닉네임"
+                   placeholder="닉네임">
+            <input type="submit" class="login-btn"
+                   value="가입">
+        </form>
+    </div>
+
+</section>
+<footer>
+    <th:block th:insert="~{fragments::footer}"/>
+</footer>
+</body>
+<script>
+
+    let ch = false;
+
+    function idcheck() {
+        let cid = $("#cid").val();
+        if (cid == "" || cid == null) {
+            alert("아이디를 입력하세요");
+            return;
+        }
+
+        //db로데이터 전송해서 비교 : ajax로 컨트롤러에 보내기
+        let sendobj = {"cid": cid};
+        //"cid" : service랑 맞추기
+        // cid : 위에 let cid 랑 맞추기
+        $.ajax({
+            url: "idcheck", //controller url이랑 맞춰야됨
+            type: "get",
+            data: sendobj,
+            success: (res) => {
+                if (res == "ok") {
+                    alert("사용가능한 아이디입니다");
+                    ch = true;
+                } else {
+                    alert("사용할 수 없는 아이디입니다");
+                    $("#cid").val("");
+                    $("#cid").focus();
+                    ch = false;
+                }
+            },
+            error: (err) => {
+                console.log(err);
+                ch = false;
+            }
+        });
+    }
+        function check() {
+            if (ch == false) {
+                alert("아이디 중복체크를 진행해주세요");
+                return false;
+            }
+            const jform = document.jForm;
+            let length = jform.length - 1;
+            for (let i = 0; i < length; i++) {
+                if (jform[i].value == "" || jform[i].value == null) {
+                    console.log(1, jform[i])
+                    alert(jform[i].title + " 입력해주세요");
+                    jform[i].focus();
+                    return false;
+
+            }
+        }
+    }
+</script>
+</html>

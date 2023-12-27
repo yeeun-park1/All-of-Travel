@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aidata.springboard3.dao.ReivewDao">
+
+    <insert id="insertReview" parameterType="ReviewDto" useGeneratedKeys="true" keyProperty="rno">
+        <selectKey keyProperty="rno" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO review
+        VALUES (NULL, #{rtitle}, #{rcontents}, #{cid},DEFAULT, DEFAULT)
+    </insert>
+
+    <insert id="insertFile" parameterType="ReviewFileDto">
+        INSERT INTO reviewfile
+        VALUES (NULL, #{rf_rno}, #{rf_oriname}, #{rf_sysname})
+    </insert>
+
+    <insert id="insertcomment" parameterType="CommentDto"  useGeneratedKeys="true" keyProperty="rc_no">
+        <selectKey keyProperty="rc_no" resultType="Integer"
+                   order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO rcomment
+        VALUES (NULL,#{rc_rno},#{rc_contents},#{rc_cid},DEFAULT)
+    </insert>
+
+    <update id="updateViews" parameterType="ReviewDto">
+        UPDATE review
+        SET rviews = #{rviews}
+        WHERE rno = #{rno}
+    </update>
+
+    <update id="updateReview" parameterType="ReviewDto">
+        UPDATE review
+        SET rtitle=#{rtitle}, rcontents=#{rcontents}
+        WHERE rno=#{rno}
+    </update>
+
+    <delete id="deleteFiles">
+        DELETE FROM reviewfile WHERE rf_rno =#{rno}
+    </delete>
+
+    <delete id="deleteReply">
+        DELETE FROM rcomment WHERE rc_rno =#{rno}
+    </delete>
+
+    <delete id="deleteReview">
+        DELETE FROM review WHERE rno =#{rno}
+    </delete>
+
+    <delete id="deleteFile">
+        DELETE FROM reviewfile WHERE rf_sysname=#{sysname}
+    </delete>
+
+    <select id="selectReviewList" resultType="com.aidata.springboard3.dto.ReviewDto" parameterType="SearchDto">
+        SELECT * FROM rlist
+        <if test="keyword != null and keyword != ''">
+            WHERE ${colname} LIKE CONCAT ('%', #{keyword}, '%')
+        </if>
+        LIMIT #{pageNum}, #{listCnt}
+
+    </select>
+    <select id="selectReivewCnt" resultType="java.lang.Integer">
+        SELECT count(*) FROM rlist
+        <if test="keyword != null and keyword != ''">
+            WHERE ${colname} LIKE CONCAT ('%', #{keyword}, '%')
+        </if>
+    </select>
+
+    <select id="selectReview" resultType="ReviewDto" parameterType="Integer">
+        SELECT * FROM rlist
+        WHERE rno = #{rno}
+    </select>
+
+    <select id="selectFileList" resultType="ReviewFileDto" parameterType="Integer">
+        SELECT * FROM reviewfile WHERE rf_rno=#{rno}
+    </select>
+
+    <select id="selectReplyList" resultType="CommentDto">
+        SELECT * FROM comments WHERE rc_rno=#{rno}
+    </select>
+
+    <select id="selectFileName" resultType="String" parameterType="Integer">
+        SELECT rf_sysname FROM reviewfile WHERE rf_rno = #{rno}
+    </select>
+
+    <select id="selectLastcomment" resultType="CommentDto">
+        SELECT * FROM comments WHERE rc_no =#{rc_no}
+    </select>
+</mapper>

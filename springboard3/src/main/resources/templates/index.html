@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>여신티켓</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ai-data board</title>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://b4.n.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+
+</head>
+<script th:inline="javascript">
+    $(function () {
+        let m = [[${msg}]];
+        if (m != null) {
+            alert(m);
+        }
+
+        $(".slider").bxSlider({
+            auto: true,
+            slideWidth: 600,
+        });
+    })
+
+</script>
+<body>
+<header>
+    <th:block th:insert="~{fragments::header(${session.customer})}"></th:block>
+</header>
+
+<section>
+    <div class="home">
+        <video src="image/home.mp4" controls></video>
+<!--        <th:block th:insert="~{fragments::board}"></th:block>-->
+
+        <div class="board">
+            <h2> 쉿! 할인중이에요! </h2>
+            <button id="hospital">병원</button>
+            <button id="tv">여신TV</button>
+            <button id="review">리뷰</button>
+            <button id="MYPAGE">MY PAGE</button>
+            <div class="slider">
+                <div><img src="image/coupon.gif"></div>
+                <div><img src="image/ulthera.jpg"></div>
+                <div><img src="image/rejuran.jpg"></div>
+                <div><img src="image/oligio.jpg"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <th:block th:insert="~{fragments::footer}"></th:block>
+</footer>
+</body>
+<script th:inline="javascript">
+
+    $("#hospital").click(function () {
+        location.href = "/HosptialList?PageNum=1";
+    });
+
+    $("#tv").click(function () {
+        location.href = "/tvList";
+    });
+
+    $("#review").click(function () {
+        location.href = "/reviewList?PageNum=1";
+    });
+
+    $("#MYPAGE").hide();
+    let customer = [[${session.customer}]];
+
+    if(customer != null) {
+        $("#MYPAGE").show();
+        $("#MYPAGE").click(function () {
+            location.href = "/myPage";
+        });
+    }
+</script>
+</html>
