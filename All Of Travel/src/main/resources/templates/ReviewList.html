@@ -149,10 +149,7 @@
         category = pdto.category;
     }
     $("#button-search").click(function () {
-        //<button id="search">검색</button>이 클릭되면
         let keyword = $("#keyword").val();
-        //let category = $("#category").val();
-        //<input type="text" id="keyword">의 value값을 가져와라
         if (keyword == "") {
             alert("검색어를 입력하세요");
             return;

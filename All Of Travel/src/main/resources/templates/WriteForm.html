@@ -198,16 +198,26 @@
     $("#backbtn").click(function () {
 
         let url = "/ReviewList?";
-
         const pageDto = [[${session.pdto}]];
-
-
-        let colname = "";
         let keyword = "";
         if(pageDto != null){
-            colname = pageDto.colname;
             keyword = pageDto.keyword;
         }
+        let page = [[${session.pageNum}]];
+        if(keyword !== ""){
+            url += `keyword=${keyword}&pageNum=${page}`;
+        } else {
+            url += `pageNum=${page}`;
+        }
+        console.log(url);
+        const category = [[${review.category}]];
+        // 카테고리 정보가 있다면, 해당 카테고리 파라미터 추가
+        if (category != null && category !== "") {
+            url += `&category=${category}`;
+        }
+
+        location.href = url;
+    });
 
         let page = [[${session.pageNum}]];
 

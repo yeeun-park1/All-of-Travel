@@ -91,19 +91,20 @@ public class CommunityService {
 
         MembershipDto member = (MembershipDto) session.getAttribute("member");
         //조회수 +1씩 증가
-        int views = rdto.getViews();
-        if (member.getMid().equals(rdto.getMid())) {
-            views += 0;
-            rdto.setViews(views);
-            cDao.updateViewPoint(rdto);
-        } else {
-            views++;
-            rdto.setViews(views);
-            cDao.updateViewPoint(rdto);
+        ReviewDto rv = cDao.selectReview2(renum);
+
+        //조회수 +1씩 증가
+        int views = rv.getViews();
+        String rmid = rv.getMid();
+        if (member == null || !member.getMid().equals(rmid)) {
+            views ++;
+            rv.setViews(views);
+            cDao.updateViewPoint(rv);
         }
         //조회수가 증가하게 세션에 저장
-        rdto = cDao.selectReview2(rdto.getRenum());
-        session.setAttribute("rdto", rdto);
+        rdto = cDao.selectReview2(renum);
+        session.setAttribute("review", rv);
+        mv.addObject("review", rv);
 
         if (member != null){
             String mid = member.getMid();
