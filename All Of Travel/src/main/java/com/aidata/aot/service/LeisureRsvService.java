@@ -74,7 +74,8 @@ private LReservationDao ldao;
 
         try {
             ldao.insertlbook(lbook);
-            msg = "구매 성공";
+            msg = "예약완료!\n" + lbook.getPaymentMethod() + " 으로 예약금 10,000원을 입금하여주세요. \n 잔금 (" +
+                    lbook.getTtotalprice()+" - 10,000) = "+(lbook.getTtotalprice()-10000)+"은 현장결제 해주세요.";
             view = "redirect:LBookDetail?book="+lbook.getLbnum();
         } catch (Exception e) {
             e.printStackTrace();

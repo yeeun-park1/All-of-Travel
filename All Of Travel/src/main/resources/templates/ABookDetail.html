@@ -15,6 +15,14 @@
     <!-- Custom styles for this template -->
     <link href="list/css/shop-homepage.css" rel="stylesheet">
     <script src="js/jquery-3.7.1.min.js"></script>
+    <script th:inline="javascript">
+        $(function(){
+            let m = [[${msg}]];
+            if(m != null){
+                alert(m);
+            }
+        });
+    </script>
     <style>
         section p {
             border: 1px groove darkgray;

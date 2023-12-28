@@ -20,4 +20,5 @@ public class LBookDto {
     private int totalprice; //계산용
     private String category;
     private String status;
+    private String paymentMethod;
 }

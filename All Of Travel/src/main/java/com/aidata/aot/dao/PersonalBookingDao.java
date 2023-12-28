@@ -29,36 +29,21 @@ public interface PersonalBookingDao {
 
     void insertEvaluate(EvaluateDto edto);
 
-    List<PageDto> selectHProList(PageDto pdto);
+    List<PageDto> selectHBookList(PageDto pdto);
 
-    List<PageDto> selectAProList(PageDto pdto);
+    List<PageDto> selectABookList(PageDto pdto);
 
-    List<PageDto> selectRProList(PageDto pdto);
+    List<PageDto> selectRBookList(PageDto pdto);
 
-    List<PageDto> selectLProDList(PageDto pdto);
+    List<PageDto> selectLBookList(PageDto pdto);
 
-    int countHProList(PageDto pdto);
+    int countHBookList(PageDto pdto);
 
-    int countAProList(PageDto pdto);
+    int countABookList(PageDto pdto);
 
-    int countRProList(PageDto pdto);
+    int countRBookList(PageDto pdto);
 
-    int countLProDList(PageDto pdto);
+    int countLBookList(PageDto pdto);
 
-    int countHPreList(PageDto pdto);
-
-    int countAPreList(PageDto pdto);
-
-    int countRPreList(PageDto pdto);
-
-    int countLPreDList(PageDto pdto);
-
-    List<PageDto> selectHPreList(PageDto pdto);
-
-    List<PageDto> selectAPreList(PageDto pdto);
-
-    List<PageDto> selectRPreList(PageDto pdto);
-
-    List<PageDto> selectLPreDList(PageDto pdto);
 
 }

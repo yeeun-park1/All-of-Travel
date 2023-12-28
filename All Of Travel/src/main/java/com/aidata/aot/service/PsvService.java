@@ -205,19 +205,19 @@ public ModelAndView getPreBookList(PageDto pdto, HttpSession session) {
     List<PageDto> prelist = null;
     switch (pdto.getCategory()){
         case "hotel" :
-            prelist =  pDao.selectHPreList(pdto);
+            prelist =  pDao.selectHBookList(pdto);
             url = "/HBookDetail";
             break;
         case "air" :
-            prelist =  pDao.selectAPreList(pdto);
+            prelist =  pDao.selectABookList(pdto);
             url = "/ABookDetail";
             break;
         case "rent" :
-            prelist =  pDao.selectRPreList(pdto);
+            prelist =  pDao.selectRBookList(pdto);
             url = "/RBookDetail";
             break;
         case "leisure" :
-            prelist =  pDao.selectLPreDList(pdto);
+            prelist =  pDao.selectLBookList(pdto);
             url = "/LBookDetail";
             break;
     }
@@ -240,10 +240,6 @@ public ModelAndView getPreBookList(PageDto pdto, HttpSession session) {
     private String getprePaging(PageDto pdto) {
         String pageHtml = null;
 
-//        if(category == null){
-//            category = "hotel";
-//        }
-
         if(pdto.getCategory() == null){
             pdto.setCategory("hotel");
         }
@@ -252,19 +248,19 @@ public ModelAndView getPreBookList(PageDto pdto, HttpSession session) {
         String listName = "";
         switch (pdto.getCategory()){
             case "hotel" :
-                maxNum =  pDao.countHPreList(pdto);
+                maxNum =  pDao.countHBookList(pdto);
                 listName = "PreBookList?category=hotel&";
                 break;
             case "air" :
-                maxNum =  pDao.countAPreList(pdto);
+                maxNum =  pDao.countABookList(pdto);
                 listName = "PreBookList?category=air&";
                 break;
             case "rent" :
-                maxNum =  pDao.countRPreList(pdto);
+                maxNum =  pDao.countRBookList(pdto);
                 listName = "PreBookList?category=rent&";
                 break;
             case "leisure" :
-                maxNum =  pDao.countLPreDList(pdto);
+                maxNum =  pDao.countLBookList(pdto);
                 listName = "PreBookList?category=leisure&";
                 break;
         }
@@ -316,20 +312,20 @@ public ModelAndView getPreBookList(PageDto pdto, HttpSession session) {
         List<PageDto> prolist = null;
         switch (pdto.getCategory()){
             case "hotel" :
-                prolist =  pDao.selectHProList(pdto);
+                prolist =  pDao.selectHBookList(pdto);
                 url = "HBookDetail";
                 break;
             case "air" :
-                prolist =  pDao.selectAProList(pdto);
+                prolist =  pDao.selectABookList(pdto);
 
                 url = "ABookDetail";
                 break;
             case "rent" :
-                prolist =  pDao.selectRProList(pdto);
+                prolist =  pDao.selectRBookList(pdto);
                 url = "RBookDetail";
                 break;
             case "leisure" :
-                prolist =  pDao.selectLProDList(pdto);
+                prolist =  pDao.selectLBookList(pdto);
                 url = "LBookDetail";
                 break;
         }
@@ -352,10 +348,6 @@ public ModelAndView getPreBookList(PageDto pdto, HttpSession session) {
     private String getproPaging(PageDto pdto) {
         String pageHtml = null;
 
-//        if(category == null){
-//            category = "hotel";
-//        }
-
         if(pdto.getCategory() == null){
             pdto.setCategory("hotel");
         }
@@ -364,19 +356,19 @@ public ModelAndView getPreBookList(PageDto pdto, HttpSession session) {
         String listName = "";
         switch (pdto.getCategory()){
             case "hotel" :
-                maxNum =  pDao.countHProList(pdto);
+                maxNum =  pDao.countHBookList(pdto);
                 listName = "ProBookList?category=hotel&";
                 break;
             case "air" :
-                maxNum =  pDao.countAProList(pdto);
+                maxNum =  pDao.countABookList(pdto);
                 listName = "ProBookList?category=air&";
                 break;
             case "rent" :
-                maxNum =  pDao.countRProList(pdto);
+                maxNum =  pDao.countRBookList(pdto);
                 listName = "ProBookList?category=rent&";
                 break;
             case "leisure" :
-                maxNum =  pDao.countLProDList(pdto);
+                maxNum =  pDao.countLBookList(pdto);
                 listName = "ProBookList?category=leisure&";
                 break;
         }
