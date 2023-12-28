@@ -28,12 +28,12 @@
     </select>
 
     <select id="selectAlogo" resultType="java.lang.String">
-        SELECT alogo FROM air
+        SELECT alogo FROM airline
         WHERE anum=#{company}
     </select>
 
     <select id="selectRlogo" resultType="java.lang.String">
-        SELECT rlogo FROM rent
+        SELECT rlogo FROM rentcompany
         WHERE rnum=#{company}
     </select>
 

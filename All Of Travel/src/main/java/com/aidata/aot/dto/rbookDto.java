@@ -28,4 +28,5 @@ public class rbookDto {
     private String coriname; //차량사진
     private int totalinsu; //총 보험비 넘어가야하는거
     private String cinsu; //보험이름
+    private String category;
 }

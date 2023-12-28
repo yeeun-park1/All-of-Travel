@@ -49,9 +49,11 @@
                 <input type="submit" class="fadeIn fourth" value="변경">
             </form>
         <div id="formFooter">
-            <a th:href="@{findId}" class="underlineHover"><button class="join-btn">아이디 찾기</button></a>
-            <br>
-            <a th:href="@{Login}" class="underlineHover"><button class="join-btn">로그인 하러 가기</button></a>
+            <th:block th:unless="${session.member} != null">
+                <a th:href="@{findId}" class="underlineHover"><button class="join-btn">아이디 찾기</button></a>
+                <br>
+                <a th:href="@{Login}" class="underlineHover"><button class="join-btn">로그인 하러 가기</button></a>
+            </th:block>
         </div>
     </div>
     </div>

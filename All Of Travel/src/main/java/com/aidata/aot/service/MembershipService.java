@@ -295,8 +295,14 @@ public class MembershipService {
             String encpwd = pEncoder.encode(member.getMpw());
             member.setMpw(encpwd); //암호화문구로 덮기
             mDao.updatePassword(member);
-            msg = "변경 완료";
-            view = "redirect:Login";
+            if(session.getAttribute("member") == null){
+                msg = "변경 완료";
+                view = "redirect:Login";
+            } else {
+                msg = "변경 완료";
+                view = "redirect:MyPage";
+            }
+
         } catch (Exception e){
             e.printStackTrace();
             msg = "변경 실패";
@@ -305,7 +311,6 @@ public class MembershipService {
         rttr.addFlashAttribute("msg", msg);
         return view;
     }
-
     public String mfindId(String mlname, String mfname, String mphone, HttpSession session, RedirectAttributes rttr) {
         log.info("mfindId");
         String view = null;

@@ -47,7 +47,7 @@
     <div>
         <div class="text-center">
             <h1 class="fw-bolder" th:text="${airline.aname}"></h1>
-                <input type="hidden" id="aname" th:value="${airline.aname}">
+                <input type="hidden" id="cname" th:value="${airline.aname}">
             <input type="hidden" id="category" value="air">
             <input type="hidden" id="company" th:value="${airline.anum}">
             <p class="lead mb-0" th:text="'◈ ' + ${airline.aname} + '과 함께 편안한 여행되세요 ◈'"></p>
@@ -170,6 +170,8 @@
         $("#bookmark").show();
 
     }
+
+
     function smile() {
         console.log("smile()");
         var imageElement = document.getElementById("bookmark");

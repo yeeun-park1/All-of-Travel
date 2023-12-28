@@ -6,7 +6,7 @@
         SELECT LAST_INSERT_ID()
     </selectKey>
         INSERT INTO rbook
-        values (null,#{rnum},#{cnum},#{mid},#{rname},#{sdate},#{edate},#{rlogo},#{stime},#{rprice},#{cinsuprice},#{cbrand},#{totalprice},#{totaldate},#{coriname},#{cinsu},DEFAULT)
+        values (null,#{rnum},#{cnum},#{mid},#{rname},#{sdate},#{edate},#{rlogo},#{stime},#{rprice},#{cinsuprice},#{cbrand},#{totalprice},#{totaldate},#{coriname},#{cinsu},DEFAULT,DEFAULT)
     </insert>
     <update id="updateRbook" parameterType="com.aidata.aot.dto.rbookDto">
         UPDATE rbook

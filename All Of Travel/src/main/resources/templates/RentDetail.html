@@ -42,6 +42,8 @@
     <div class="text-center my-5">
         <h1 class="fw-bolder" th:text="${rentcompany.rname}"></h1>
         <input type="hidden" id="category" value="rent">
+        <input type="hidden" id="company" th:value="${rentcompany.rnum}">
+        <input type="hidden" id="cname" th:value="${rentcompany.rname}">
         <p class="lead mb-0">Welcome to our RentCompany</p>
     </div>
 </header>

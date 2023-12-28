@@ -175,8 +175,8 @@
     <th:block th:insert="~{fragment::footer}" />
 </footer>
 <script th:inline="javascript">
-    //파일명 처리용 함수
-    $("#file").on("change", function () {
+        //파일명 처리용 함수
+        $("#file").on("change", function () {
         //파일 선택창에서 업로드할 파일을 선택한 다음
         //'열기' 버튼을 누르면 change 이벤트가 발생.
         //console.log($("#file"));
@@ -186,56 +186,38 @@
         let fileName = "";//출력할 문장 저장 변수
 
         if(files.length > 1){
-            fileName = `${files[0].name} 외 ${files.length - 1}개`;
-        } else if(files.length == 1){
-            fileName = files[0].name;
-        } else {
-            fileName = "파일선택";
-        }
+        fileName = `${files[0].name} 외 ${files.length - 1}개`;
+    } else if(files.length == 1){
+        fileName = files[0].name;
+    } else {
+        fileName = "파일선택";
+    }
         $(".upload-name").val(fileName);
     });
 
-    $("#backbtn").click(function () {
+        $("#backbtn").click(function () {
 
         let url = "/ReviewList?";
         const pageDto = [[${session.pdto}]];
         let keyword = "";
         if(pageDto != null){
-            keyword = pageDto.keyword;
-        }
+        keyword = pageDto.keyword;
+    }
         let page = [[${session.pageNum}]];
         if(keyword !== ""){
-            url += `keyword=${keyword}&pageNum=${page}`;
-        } else {
-            url += `pageNum=${page}`;
-        }
+        url += `keyword=${keyword}&pageNum=${page}`;
+    } else {
+        url += `pageNum=${page}`;
+    }
         console.log(url);
         const category = [[${review.category}]];
         // 카테고리 정보가 있다면, 해당 카테고리 파라미터 추가
         if (category != null && category !== "") {
-            url += `&category=${category}`;
-        }
+        url += `&category=${category}`;
+    }
 
         location.href = url;
     });
-
-        let page = [[${session.pageNum}]];
-
-        if(colname == null || colname == ""){//검색 안한 목록 이동
-            url += `pageNum=${page}`;
-        } else {//검색한 결과 목록으로 이동.
-            url += `colname=${colname}&keyword=${keyword}&pageNum=${page}`;
-        }
-        console.log(url);
-
-
-        const category = [[${review.category}]];
-        // 카테고리 정보가 있다면, 해당 카테고리 파라미터 추가
-        if (category != null && category !== "") {
-            url += `&category=${category}`;
-        }
-
-        location.href = url;
-    });
+</script>
 </script>
 </html>
