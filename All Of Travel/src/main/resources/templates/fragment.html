@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>fragment</title>
+</head>
+<body>
+
+<nav th:fragment="header(member)" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{index}">AOT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <th:block th:if="${member == null}">
+                    <li class="nav-item active">
+                        <a class="nav-link" th:href="@{Login}">Login</a>
+                    </li>
+                </th:block>
+                <th:block th:unless="${member == null}">
+                    <li class="nav-item active">
+                        <a class="nav-link" th:href="@{Logout}">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{MyPage}">Mypage</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{BookmarkList(mid=${member.mid}, category='hotel')}">Bookmark</a>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div th:fragment="footer" class="bg-dark footer-bar">
+    <div class="text-center text-white">
+        <div >All Of Travel Company</div>
+        <div>@TeamAOT</div>
+    </div>
+</div>
+
+
+
+<div th:fragment="menubar(member)" class="menubar">
+    <th:block th:if="${member==null}">
+        <h2>Reservation</h2>
+        <div class="list-group">
+            <a th:href="@{HotelList}" class="list-group-item">Hotel</a>
+            <a th:href="@{AirLineList}" class="list-group-item">Airline</a>
+            <a th:href="@{RentList}" class="list-group-item">Rent car</a>
+            <a th:href="@{LeisureList}" class="list-group-item">Leisure</a>
+        </div>
+        <h2>Community</h2>
+        <div class="list-group">
+            <a href="/ReviewList?category=hotel" class="list-group-item">Hotel Review</a>
+            <a href="/ReviewList?category=air" class="list-group-item">Airline Review</a>
+            <a href="/ReviewList?category=rent" class="list-group-item">Rent car Review</a>
+            <a href="/ReviewList?category=leisure" class="list-group-item">Leisure Review</a>
+        </div>
+        <h2>Membership</h2>
+        <div class="list-group">
+            <a th:href="@{Login}" class="list-group-item">LogIn</a>
+        </div>
+    </th:block>
+    <th:block th:unless="${member==null}">
+        <h2>Reservation</h2>
+        <div class="list-group">
+            <a th:href="@{HotelList}" class="list-group-item">Hotel</a>
+            <a th:href="@{AirLineList}" class="list-group-item">Airline</a>
+            <a th:href="@{RentList}" class="list-group-item">Rent car</a>
+            <a th:href="@{LeisureList}" class="list-group-item">Leisure</a>
+        </div>
+        <h2>Community</h2>
+        <div class="list-group">
+            <a href="/ReviewList?category=hotel" class="list-group-item">Hotel Review</a>
+            <a href="/ReviewList?category=air" class="list-group-item">Airline Review</a>
+            <a href="/ReviewList?category=rent" class="list-group-item">Rent car Review</a>
+            <a href="/ReviewList?category=leisure" class="list-group-item">Leisure Review</a>
+        </div>
+        <h2>Membership</h2>
+        <div class="list-group">
+            <a th:href="@{MyPage}" class="list-group-item">My Page</a>
+            <a th:href="@{PreBookList}" class="list-group-item">PreBookList</a>
+            <a th:href="@{ProBookList}" class="list-group-item">ProBookList</a>
+            <a th:href="@{BookmarkList(mid=${member.mid}, category='hotel')}" class="list-group-item">Bookmark</a>
+        </div>
+    </th:block>
+</div>
+
+<div th:fragment="index(member)">
+    <th:block th:if="${member == null}">
+        <div class="nav nav-overlay">
+            <div class="nav__content">
+                <div class="container">
+                    <div class="row p-4 p-md-0 flex-column-reverse flex-md-row g-md-5 nav__block">
+                        <div class="col-md-5">
+                            <ul class="nav__list d-none d-md-block">
+                                <li class="nav__list-item active-nav"><a th:href="@{index}" class="hover-target">Home</a>
+                                </li>
+                                <li class="nav__list-item"><a th:href="@{HotelList}" class="hover-target">HOTEL</a></li>
+                                <li class="nav__list-item"><a th:href="@{AirLineList}" class="hover-target">AIRLINE</a></li>
+                                <li class="nav__list-item"><a th:href="@{RentList}" class="hover-target">RENTCAR</a></li>
+                                <li class="nav__list-item"><a th:href="@{LeisureList}" class="hover-target">LEISURE</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4 text-white">
+                            <h3 class="text-white fw-bold nav__block-item">Community</h3>
+                            <ul class="list-unstyled nav__block-item">
+                                <li><a href="/ReviewList?category=hotel" class="text-white">Hotel Review<span
+                                        class="badge bg-primary"></span></a></li>
+                                <li><a href="/ReviewList?category=air" class="text-white">Airline Review<span
+                                        class="badge bg-primary"></span></a></li>
+                                <li><a href="/ReviewList?category=rent" class="text-white">Rentcar Review<span
+                                        class="badge bg-primary"></span></a></li>
+                                <li><a href="/ReviewList?category=leisure" class="text-white">Leisure Review<span
+                                        class="badge bg-primary"></span></a></li>
+                                <ul class="list-unstyled text-light nav__block-item">
+                                    <li class="menu-item"><i class="icon icon-location2 me-2"></i>인천광역시 미추홀구 매소홀로488번길 6-32</li>
+                                    <li class="menu-item"><i class="icon icon-phone me-2"></i>+00 111 222 3333</li>
+                                    <li class="menu-item"><i class="icon icon-envelope-o me-2"></i>alloftravel@google.com</li>
+                                </ul>
+                            </ul>
+                        </div>
+                        <div class="col-md-3 text-white">
+                            <h3 class="text-white fw-bold nav__block-item">Membership</h3>
+                            <ul class="list-unstyled nav__block-item">
+                                <li><a th:href="@{Login}" class="text-white">Login <span class="badge bg-primary"></span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-logo" style="width: 270px">
+            <a th:href="@{index}">.AOT</a>
+        </div>
+    </th:block>
+    <th:block th:unless="${member == null}">
+        <div class="nav nav-overlay">
+            <div class="nav__content">
+                <div class="container">
+                    <div class="row p-4 p-md-0 flex-column-reverse flex-md-row g-md-5 nav__block">
+                        <div class="col-md-5">
+                            <ul class="nav__list d-none d-md-block">
+                                <li class="nav__list-item active-nav"><a th:href="@{index}" class="hover-target">Home</a>
+                                </li>
+                                <li class="nav__list-item"><a th:href="@{HotelList}" class="hover-target">HOTEL</a></li>
+                                <li class="nav__list-item"><a th:href="@{AirLineList}" class="hover-target">AIRLINE</a></li>
+                                <li class="nav__list-item"><a th:href="@{RentList}" class="hover-target">RENTCAR</a></li>
+                                <li class="nav__list-item"><a th:href="@{LeisureList}" class="hover-target">LEISURE</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4 text-white">
+                            <h3 class="text-white fw-bold nav__block-item">Community</h3>
+                            <ul class="list-unstyled nav__block-item">
+                                <li><a href="/ReviewList?category=hotel" class="text-white">Hotel Review<span
+                                        class="badge bg-primary"></span></a></li>
+                                <li><a href="/ReviewList?category=air" class="text-white">Airline Review<span
+                                        class="badge bg-primary"></span></a></li>
+                                <li><a href="/ReviewList?category=rent" class="text-white">Rentcar Review<span
+                                        class="badge bg-primary"></span></a></li>
+                                <li><a href="/ReviewList?category=leisure" class="text-white">Leisure Review<span
+                                        class="badge bg-primary"></span></a></li>
+                                <ul class="list-unstyled text-light nav__block-item">
+                                    <li class="menu-item"><i class="icon icon-location2 me-2"></i>인천광역시 미추홀구 매소홀로488번길 6-32</li>
+                                    <li class="menu-item"><i class="icon icon-phone me-2"></i>+00 111 222 3333</li>
+                                    <li class="menu-item"><i class="icon icon-envelope-o me-2"></i>alloftravel@google.com</li>
+                                </ul>
+
+                            </ul>
+                        </div>
+                        <div class="col-md-3 text-white">
+                            <h3 class="text-white fw-bold nav__block-item">Membership</h3>
+                            <ul class="list-unstyled nav__block-item">
+                                <li><a th:href="@{Logout}" class="text-white">Logout <span class="badge bg-primary"></span></a></li>
+                                <li><a th:href="@{MyPage}" class="text-white">My Page <span class="badge bg-primary"></span></a></li>
+                                <li><a th:href="@{PreBookList}" class="text-white">예약내역<span class="badge bg-primary"></span></a></li>
+                                <li><a th:href="@{ProBookList}" class="text-white">사용내역<span class="badge bg-primary"></span></a></li>
+                                <li><a th:href="@{BookmarkList(mid=${member.mid}, category='hotel')}" class="text-white">찜한내역<span class="badge bg-primary"></span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-logo" style="width: 270px">
+            <a th:href="@{index}">.AOT</a>
+        </div>
+    </th:block>
+</div>
+
+</body>
+</html>
