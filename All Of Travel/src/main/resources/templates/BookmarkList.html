@@ -61,16 +61,16 @@
                     <th:block th:unless="${#lists.isEmpty(klist)}">
                         <th:block th:each="kitem:${klist}">
                             <div class="fadeIn second info" style="display: flex; width: 500px">
-                                <a th:href="@{url(company=${kitem.company})}"></a>
-                                    <img id="img" th:src="${'upload/' + kitem.oriname}">
+                                <img id="img" th:src="${'upload/' + kitem.oriname}">
                                 <input type="hidden" id="company" th:value="${kitem.company}">
                                 <input type="hidden" id="category" th:value="${kitem.category}">
                                 <input type="hidden" id="cname" th:value="${kitem.cname}">
                                     <div style="flex-direction: row">
                                         <br>
+                                        <a th:href="@{url(company=${kitem.company})}">
                                         <h1 style="margin-top: -15px; margin-right: 40px; word-break: break-all; width: 260px;" th:text="${kitem.cname}"/>
+                                        </a>
                                     </div>
-                                </a>
                                 <img id="bookmark" src="images/sad.jpg" onclick="smile()">
                             </div>
                         </th:block>
